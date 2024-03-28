@@ -10,7 +10,7 @@ namespace SFAMarketplaceWEB.Pages.Account
     public class RegisterModel : PageModel
     {
         [BindProperty]
-        public NewUserModel NewUser { get; set; } // Define NewUser here
+        public NewUserModel NewUser { get; set; }
 
         public class NewUserModel
         {
@@ -33,7 +33,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 // Create a database connection
                 SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString());
 
-                // Create a SQL command. Add `Phone` and `LastLoginTime` to the insert statement.
+                // Create a SQL command
                 string cmdText = "INSERT INTO Users (FirstName, LastName, Email, PasswordHash, LastLoginTime) " +
                                  "VALUES (@firstName, @lastName, @email, @PasswordHash, @LastLoginTime)";
 

@@ -73,4 +73,7 @@
     <Build Include="dbo\Tables\ItemsInCart.sql" />
     <Build Include="dbo\Tables\Cart.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="PopulateDB.sql" />
+  </ItemGroup>
 </Project>

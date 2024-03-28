@@ -23,8 +23,6 @@ namespace SFAMarketplaceWEB.Models
         public string Password { get; set; }
 
         [Required]
-        public string Phone { get; set; }
-
         public int RoleId { get; set; }
 
         public DateTime LastLoginTime { get; set; }
