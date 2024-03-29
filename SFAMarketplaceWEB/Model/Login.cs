@@ -9,4 +9,6 @@ namespace SFAMarketplaceWEB.Model
         [Required]
         public string Password { get; set; }
     }
+
+    //test
 }
