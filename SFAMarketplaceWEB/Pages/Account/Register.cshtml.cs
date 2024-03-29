@@ -2,54 +2,39 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
+using SFAMarketplaceWEB.Models;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace SFAMarketplaceWEB.Pages.Account
 {
     public class RegisterModel : PageModel
     {
         [BindProperty]
-        public NewUserModel NewUser { get; set; }
-
-        public class NewUserModel
-        {
-            [Required]
-            public string FirstName { get; set; }
-            [Required]
-            public string LastName { get; set; }
-            [Required]
-            [EmailAddress]
-            public string Email { get; set; }
-            [Required]
-            [DataType(DataType.Password)]
-            public string Password { get; set; }
-        }
+        public User NewUser { get; set; }
 
         public ActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                // Create a database connection
-                SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString());
+                using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    string cmdText = @"
+                INSERT INTO Users (FirstName, LastName, Email, PasswordHash, Role, LastLoginTime) 
+                VALUES (@FirstName, @LastName, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
-                // Create a SQL command
-                string cmdText = "INSERT INTO Users (FirstName, LastName, Email, PasswordHash, LastLoginTime) " +
-                                 "VALUES (@firstName, @lastName, @email, @PasswordHash, @LastLoginTime)";
+                    using (var cmd = new SqlCommand(cmdText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
+                        cmd.Parameters.AddWithValue("@LastName", NewUser.LastName);
+                        cmd.Parameters.AddWithValue("@Email", NewUser.Email);
+                        cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
+                        cmd.Parameters.AddWithValue("@Role", 1);
+                        cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
 
-                SqlCommand cmd = new SqlCommand(cmdText, conn);
-                cmd.Parameters.AddWithValue("@firstName", NewUser.FirstName);
-                cmd.Parameters.AddWithValue("@lastName", NewUser.LastName);
-                cmd.Parameters.AddWithValue("@email", NewUser.Email);
-                cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
-                cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
-
-                // Open the database
-                conn.Open();
-                // Execute the SQL command
-                cmd.ExecuteNonQuery();
-                // Close the database
-                conn.Close();
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
 
                 return RedirectToPage("Login");
             }
@@ -60,7 +45,6 @@ namespace SFAMarketplaceWEB.Pages.Account
         }
 
 
+
     }
-
-
 }

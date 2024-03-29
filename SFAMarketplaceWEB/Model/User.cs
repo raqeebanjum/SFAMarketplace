@@ -3,28 +3,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SFAMarketplaceWEB.Models
 {
-    public class Person
+    public class User
     {
-        public int PersonId { get; set; }
+        public int UserId { get; set; }
 
         [Required(ErrorMessage = "The First Name field is required.")]
-        [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required(ErrorMessage = "The Last Name field is required.")]
-        [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Required]
-        public int RoleId { get; set; }
-
-        public DateTime LastLoginTime { get; set; }
     }
 }
