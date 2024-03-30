@@ -2,3 +2,29 @@
 @model SFAMarketplaceWEB.Pages.Account.LoginModel
 @{
 }
+<form method = "post">
+  <div class="row m-2 text-danger" asp-validation-summary="All"></div>
+    <div class="row m-2">
+        <div class="col-2">
+            <label class="form-label" asp-for="LoginUser.Username"></label>
+        </div>
+        <div class="col-10">
+            <input type="text" class="form-control" asp-for="LoginUser.Username"/>
+            <span class="text-danger" asp-validation-for="LoginUser.Username"></span>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-2">
+            <label class="form-label" asp-for="LoginUser.Password"></label>
+        </div>
+        <div class="col-10">
+            <input type="password" class="form-control" asp-for="LoginUser.Password"/>
+            <span class="text-danger" asp-validation-for="LoginUser.Password"></span>
+        </div>
+    </div>
+    <div class="row m-2">
+        <div class="col-2">
+            <button id="btnLogin" class="btn btn-primary">Sign In</button>
+        </div>
+    </div>
+</form>
