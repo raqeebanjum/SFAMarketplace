@@ -7,20 +7,20 @@ namespace SFAMarketplaceWEB.Models
     {
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "The First Name field is required.")]
+        [Required(ErrorMessage = "Username is required.")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "First Name is required.")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "The Last Name field is required.")]
+        [Required(ErrorMessage = "Last Name is required.")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email is required.")]
         [EmailAddress]
         public string Email { get; set; }
 
-        [Required]
-        public string Username { get; set; }
-
-        [Required]
+        [Required(ErrorMessage = "Password is required.")]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
