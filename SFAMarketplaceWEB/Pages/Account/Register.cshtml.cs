@@ -19,13 +19,14 @@ namespace SFAMarketplaceWEB.Pages.Account
                 using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
                 {
                     string cmdText = @"
-                INSERT INTO Users (FirstName, LastName, Email, PasswordHash, Role, LastLoginTime) 
-                VALUES (@FirstName, @LastName, @Email, @PasswordHash, @Role, @LastLoginTime)";
+            INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
+            VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
                     using (var cmd = new SqlCommand(cmdText, conn))
                     {
                         cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
                         cmd.Parameters.AddWithValue("@LastName", NewUser.LastName);
+                        cmd.Parameters.AddWithValue("@Username", NewUser.Username);
                         cmd.Parameters.AddWithValue("@Email", NewUser.Email);
                         cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
                         cmd.Parameters.AddWithValue("@Role", 1);
@@ -43,6 +44,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 return Page();
             }
         }
+
 
 
 
