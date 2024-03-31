@@ -20,6 +20,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 {
                     conn.Open();
 
+                    /*
                     bool hasError = false;
 
                     // Check if the username already exists
@@ -48,11 +49,12 @@ namespace SFAMarketplaceWEB.Pages.Account
                     {
                         return Page();
                     }
+                    */
 
                     // If username and email are unique, proceed to insert new user
                     string cmdText = @"
-                    INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
-                    VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
+            INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
+            VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
                     using (var cmd = new SqlCommand(cmdText, conn))
                     {
