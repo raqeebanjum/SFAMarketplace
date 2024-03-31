@@ -48,8 +48,8 @@ form {
     margin-bottom: 1rem;
     background-color: transparent;
     transition: all 0.3s ease;
-}/
- * Hiding placeholder text on focus */
+}
+/* Hiding placeholder text on focus */
 .form-group input[type="text"]:focus,
 .form-group input[type="email"]:focus,
 .form-group input[type="password"]:focus {
