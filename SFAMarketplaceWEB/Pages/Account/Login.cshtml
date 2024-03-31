@@ -1,30 +1,30 @@
 ﻿@page
 @model SFAMarketplaceWEB.Pages.Account.LoginModel
-@{
+@section Styles{
+    <link rel="stylesheet" href="~/css/LoginStyleSheet.css" />
 }
-<form method = "post">
-  <div class="row m-2 text-danger" asp-validation-summary="All"></div>
-    <div class="row m-2">
-        <div class="col-2">
-            <label class="form-label" asp-for="LoginUser.Username"></label>
+
+<div class="form-container">
+    <form method="post">
+        <h2>Login</h2>
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+
+        <div class="form-group">
+            <span asp-validation-for="LoginUser.Username" class="text-danger"></span>
+            <input asp-for="LoginUser.Username" class="form-control" placeholder="Username" />
         </div>
-        <div class="col-10">
-            <input type="text" class="form-control" asp-for="LoginUser.Username"/>
-            <span class="text-danger" asp-validation-for="LoginUser.Username"></span>
+
+        <div class="form-group">
+            <span asp-validation-for="LoginUser.Password" class="text-danger"></span>
+            <input asp-for="LoginUser.Password" class="form-control" placeholder="Password" type="password" />
         </div>
+
+        <button type="submit" class="btn btn-primary">Login</button>
+
+    </form>
+    <div class="register-link">
+        Don't have an account? <a asp-page="/Account/Register">Register here</a>
     </div>
-    <div class="row m-2">
-        <div class="col-2">
-            <label class="form-label" asp-for="LoginUser.Password"></label>
-        </div>
-        <div class="col-10">
-            <input type="password" class="form-control" asp-for="LoginUser.Password"/>
-            <span class="text-danger" asp-validation-for="LoginUser.Password"></span>
-        </div>
-    </div>
-    <div class="row m-2">
-        <div class="col-2">
-            <button id="btnLogin" class="btn btn-primary">Sign In</button>
-        </div>
-    </div>
-</form>
+
+</div>
