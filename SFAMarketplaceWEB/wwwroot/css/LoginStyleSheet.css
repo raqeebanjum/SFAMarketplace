@@ -1,0 +1,94 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #654ea3, #eaafc8);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+nav.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+    background: #fff;
+}
+
+
+h2 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 5%;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /*centering vertically*/
+    align-items: center; /*centering horizontally*/
+    min-height: 100vh;
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+}
+/* Styles for input fields with placeholders instead of labels */
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="password"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ced4da;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    transition: all 0.3s ease;
+}/
+ * Hiding placeholder text on focus */
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group input[type="password"]:focus {
+    outline: none;
+    border-color: #6c5ce7;
+    background-color: #e3e3e3;
+    placeholder: transparent;
+ }
+/* Style for the submit button */
+button[type="submit"] {
+    padding: 1vh 4vw;
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    background-color: #6c5ce7;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    display: block;
+    margin: 2% auto;
+    width: fit-content;
+}
+button[type="submit"]:hover {
+        background-color: #5a4dad;
+}
+
+.register-link {
+    color: #fff;
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.register-link a {
+        color: inherit;
+        text-decoration: none;
+        font-weight: bold;
+}
+
+ .register-link a:hover {
+            text-decoration: underline;
+ }
+
