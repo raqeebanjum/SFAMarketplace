@@ -16,7 +16,6 @@ namespace SFAMarketplaceWEB.Helpers
 
         public static string GetDBConnectionString()
         {
-            // Update the connection string to match your SFAMarketplaceWEB database
             string connString = "Server=(localdb)\\MSSQLLOCALDB;Database=SFAMarketplace;Trusted_Connection=true;";
             return connString;
         }
