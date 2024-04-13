@@ -16,60 +16,17 @@ namespace SFAMarketplaceWEB.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                if (UsernameDoesNotExist(NewUser.Username))
                 {
-                    conn.Open();
-
-                    /*
-                    bool hasError = false;
-
-                    // Check if the username already exists
-                    var checkUsernameCmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", conn);
-                    checkUsernameCmd.Parameters.AddWithValue("@Username", NewUser.Username);
-
-                    int usernameExists = (int)checkUsernameCmd.ExecuteScalar();
-                    if (usernameExists > 0)
-                    {
-                        ModelState.AddModelError("NewUser.Username", "Username already taken.");
-                        hasError = true;
-                    }
-
-                    // Check if the email already exists
-                    var checkEmailCmd = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Email = @Email", conn);
-                    checkEmailCmd.Parameters.AddWithValue("@Email", NewUser.Email);
-
-                    int emailExists = (int)checkEmailCmd.ExecuteScalar();
-                    if (emailExists > 0)
-                    {
-                        ModelState.AddModelError("NewUser.Email", "Email already taken.");
-                        hasError = true;
-                    }
-
-                    if (hasError)
-                    {
-                        return Page();
-                    }
-                    */
-
-                    // If username and email are unique, proceed to insert new user
-                    string cmdText = @"
-            INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
-            VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
-
-                    using (var cmd = new SqlCommand(cmdText, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
-                        cmd.Parameters.AddWithValue("@LastName", NewUser.LastName);
-                        cmd.Parameters.AddWithValue("@Username", NewUser.Username);
-                        cmd.Parameters.AddWithValue("@Email", NewUser.Email);
-                        cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
-                        cmd.Parameters.AddWithValue("@Role", 1);
-                        cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
-                        cmd.ExecuteNonQuery();
-                    }
+                    RegisterUser();
+                    return RedirectToPage("Profile");
+                }
+                else
+                {
+                    ModelState.AddModelError("RegisterError", "This username is already taken.");
+                    return Page();
                 }
 
-                return RedirectToPage("Login");
             }
             else
             {
@@ -77,8 +34,46 @@ namespace SFAMarketplaceWEB.Pages.Account
             }
         }
 
+        private void RegisterUser()
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                conn.Open();
 
+                string cmdText = @"
+                    INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
+                    VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
+                using (var cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", NewUser.LastName);
+                    cmd.Parameters.AddWithValue("@Username", NewUser.Username);
+                    cmd.Parameters.AddWithValue("@Email", NewUser.Email);
+                    cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
+                    cmd.Parameters.AddWithValue("@Role", 1);
+                    cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private bool UsernameDoesNotExist(string username)
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "SELECT * FROM Users WHERE Username = @Username";
+                using (var cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Username", username);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        return !reader.HasRows;
+                    }
+                }
+            }
+        }
 
 
 

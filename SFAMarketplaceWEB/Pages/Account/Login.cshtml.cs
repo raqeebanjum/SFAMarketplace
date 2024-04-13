@@ -26,7 +26,8 @@ namespace SFAMarketplaceWEB.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid credentials. Try Again.");
+                    ModelState.AddModelError("LoginError", "Invalid credentials.Try Again.");
+
                     return Page();
                 }
             }

@@ -8,31 +8,26 @@
 <div class="form-container">
     <form method="post">
         <h2>Register</h2>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div asp-validation-summary="All" class="text-danger"></div>
 
 
         <div class="form-group">
-            <span asp-validation-for="NewUser.Username" class="text-danger"></span>
             <input asp-for="NewUser.Username" class="form-control" placeholder="Username" />
         </div>
 
         <div class="form-group">
-            <span asp-validation-for="NewUser.FirstName" class="text-danger"></span>
             <input asp-for="NewUser.FirstName" class="form-control" placeholder="First Name" />
         </div>
 
         <div class="form-group">
-            <span asp-validation-for="NewUser.LastName" class="text-danger"></span>
             <input asp-for="NewUser.LastName" class="form-control" placeholder="Last Name" />
         </div>
 
         <div class="form-group">
-            <span asp-validation-for="NewUser.Email" class="text-danger"></span>
             <input asp-for="NewUser.Email" class="form-control" placeholder="Email" />
         </div>
 
         <div class="form-group">
-            <span asp-validation-for="NewUser.Password" class="text-danger"></span>
             <input asp-for="NewUser.Password" class="form-control" placeholder="Password" type="password" />
         </div>
 
