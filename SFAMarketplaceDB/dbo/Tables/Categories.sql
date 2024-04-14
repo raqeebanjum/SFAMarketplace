@@ -1,0 +1,4 @@
+﻿CREATE TABLE Category (
+    [CategoryID] INT PRIMARY KEY IDENTITY,
+    CategoryName NVARCHAR(100) NOT NULL
+);
