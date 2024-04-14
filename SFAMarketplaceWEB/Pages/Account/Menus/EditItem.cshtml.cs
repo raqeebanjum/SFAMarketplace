@@ -26,12 +26,12 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
                 {
                     string cmdText = @"
-                Update Item SET (UserID=@UserID, ItemName=@ItemName, ItemDescription=@ItemDescription, ItemPrice=@ItemPrice," +
-                       "CategoryID=@CategoryID, ItemTradeStatus=@ItemTradeStatus, DatePosted=@DatePosted) WHERE ItemId=@itemId";
+            Update Item SET UserID=@UserID, ItemName=@ItemName, ItemDescription=@ItemDescription, ItemPrice=@ItemPrice,
+                            CategoryID=@CategoryID, ItemTradeStatus=@ItemTradeStatus, DatePosted=@DatePosted WHERE ItemId=@itemId";
 
                     using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                     {
-                        cmd.Parameters.AddWithValue("@UserID", 1);
+                        cmd.Parameters.AddWithValue("@UserID", 1);  // Ensure the UserID is valid and exists in your database
                         cmd.Parameters.AddWithValue("@ItemName", Item.ItemName);
                         cmd.Parameters.AddWithValue("@ItemDescription", Item.ItemDescription);
                         cmd.Parameters.AddWithValue("@ItemPrice", Item.ItemPrice);
@@ -51,6 +51,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+
 
         private void PopulateCategoryDDL()
         {
