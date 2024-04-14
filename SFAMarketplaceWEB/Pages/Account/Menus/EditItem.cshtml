@@ -1,4 +1,76 @@
 ﻿@page
 @model SFAMarketplaceWEB.Pages.Account.Menus.EditItemModel
-@{
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddItemStyleSheet.css" />
 }
+
+
+<div class="item-form-container">
+    <h2>Edit Item</h2>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    @if (!ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <strong>Validation error(s):</strong>
+            <ul>
+                @foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        <li>@error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="Item.ItemName"></label>
+            <input asp-for="Item.ItemName" class="form-control" />
+            <span asp-validation-for="Item.ItemName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Item.ItemDescription"></label>
+            <textarea asp-for="Item.ItemDescription" class="form-control"></textarea>
+            <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
+        </div>
+
+        @*
+        <div class="form-group">
+        <label asp-for="Item.ItemPhotoURL1">Photo</label>
+        <input type="file" asp-for="Item.ItemPhotoURL1" class="form-control" />
+        <span asp-validation-for="Item.ItemPhotoURL1" class="text-danger"></span>
+        </div>
+        *@
+
+
+
+        <div class="form-group">
+            <label asp-for="Item.ItemPrice"></label>
+            <input asp-for="Item.ItemPrice" type="number" step="0.01" class="form-control" />
+            <span asp-validation-for="Item.ItemPrice" class="text-danger"></span>
+        </div>
+        <div class="row m-2">
+            <div class="col-2">
+                <label asp-for="Item.CategoryID">Category:</label>
+            </div>
+            <div class="col-10">
+                <select asp-for="Item.CategoryID" asp-items="Model.Categories" class="form-control">
+                    <option value="">Select a Category...</option>
+                </select>
+                <span asp-validation-for="Item.CategoryID" class="text-danger"></span>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Item.ItemTradeStatus"></label>
+            <input asp-for="Item.ItemTradeStatus" type="checkbox" />
+            <span asp-validation-for="Item.ItemTradeStatus" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+</div>
+
