@@ -1,45 +1,41 @@
 ﻿@page
 @model SFAMarketplaceWEB.Pages.Account.ProfileModel
 
-@* @section Styles {
+@section Styles {
     <link rel="stylesheet" href="~/css/ProfileStyleSheet.css" />
 }
- *@
 
-<div class="row m-2">
-    <div class="col-2">
-        <label asp-for="profile.FirstName"></label>
+<div class="profile-container">
+    <div class="profile-header">
+        <img src="https://via.placeholder.com/200" alt="Profile Image" class="profile-image" />
+        <h1>@Model.profile.FirstName @Model.profile.LastName</h1>
     </div>
-    <div class="col-10">
-        <label>@Model.profile.FirstName</label>
-    </div>
-</div>
-<div class="row m-2">
-    <div class="col-2">
-        <label asp-for="profile.LastName"></label>
-    </div>
-    <div class="col-10">
-        <label>@Model.profile.LastName</label>
-    </div>
-</div>
-<div class="row m-2">
-    <div class="col-2">
-        <label asp-for="profile.Email"></label>
-    </div>
-    <div class="col-10">
-        <label>@Model.profile.Email</label>
-    </div>
-</div>
-<div class="row m-2">
-    <div class="col-2">
-        <label asp-for="profile.LastLoginTime"></label>
-    </div>
-    <div class="col-10">
-        <label>@Model.profile.LastLoginTime</label>
-    </div>
-</div>
 
-@* <div class="profile-container">
-    <h2>Congratulations, You've successfully logged in</h2>
-    <img src="https://i.imgur.com/HD25R6v.jpeg" alt="Welcome Image" class="welcome-image" />
-</div> *@
+    <div class="profile-detail">
+        <label>Username:</label>
+        <span>@Model.profile.Username</span>
+    </div>
+
+    <div class="profile-detail">
+        <label>First Name:</label>
+        <span>@Model.profile.FirstName</span>
+    </div>
+    <div class="profile-detail">
+        <label>Last Name:</label>
+        <span>@Model.profile.LastName</span>
+    </div>
+    <div class="profile-detail">
+        <label>Email:</label>
+        <span>@Model.profile.Email</span>
+    </div>
+    <div class="profile-detail">
+        <label>Last Login:</label>
+        <span>@Model.profile.LastLoginTime.ToString("f")</span>
+    </div>
+
+    <div class="profile-footer">
+        <!-- NOT FINISHED -->
+        <p>(Editing profiles not finished yet)</p>
+        <a class="btn btn-primary" href="/Account/EditProfile">Edit Profile</a> 
+    </div>
+</div>

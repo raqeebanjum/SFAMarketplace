@@ -23,20 +23,22 @@ namespace SFAMarketplaceWEB.Pages.Account
             string email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT FirstName, LastName, Email, LastLoginTime FROM Users WHERE Email=@email";
+                string cmdText = "SELECT FirstName, LastName, Username, LastLoginTime FROM Users WHERE Email=@Email";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
-                cmd.Parameters.AddWithValue("@email", email);
+                cmd.Parameters.AddWithValue("@Email", email);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 if (reader.HasRows)
                 {
                     reader.Read();
                     profile.FirstName = reader.GetString(0);
-                    profile.LastName = reader.GetString(1);
-                    profile.Email = email;
+                    profile.LastName = reader.GetString(1); 
+                    profile.Username = reader.GetString(2);
+                    profile.Email = email;                   
                     profile.LastLoginTime = reader.GetDateTime(3);
                 }
             }
         }
+
     }
 }

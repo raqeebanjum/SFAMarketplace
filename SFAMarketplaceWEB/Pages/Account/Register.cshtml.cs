@@ -19,7 +19,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 if (UsernameDoesNotExist(NewUser.Username))
                 {
                     RegisterUser();
-                    return RedirectToPage("Profile");
+                    return RedirectToPage("Login");
                 }
                 else
                 {
