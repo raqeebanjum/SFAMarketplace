@@ -8,7 +8,7 @@
 
 <div class="row m-2">
     <div class="col-2">
-        <label>First Name: </label>
+        <label asp-for="profile.FirstName"></label>
     </div>
     <div class="col-10">
         <label>@Model.profile.FirstName</label>
@@ -16,7 +16,7 @@
 </div>
 <div class="row m-2">
     <div class="col-2">
-        <label>Last Name: </label>
+        <label asp-for="profile.LastName"></label>
     </div>
     <div class="col-10">
         <label>@Model.profile.LastName</label>
@@ -24,7 +24,7 @@
 </div>
 <div class="row m-2">
     <div class="col-2">
-        <label>Email: </label>
+        <label asp-for="profile.Email"></label>
     </div>
     <div class="col-10">
         <label>@Model.profile.Email</label>
@@ -32,7 +32,7 @@
 </div>
 <div class="row m-2">
     <div class="col-2">
-        <label>Login: </label>
+        <label asp-for="profile.LastLoginTime"></label>
     </div>
     <div class="col-10">
         <label>@Model.profile.LastLoginTime</label>

@@ -1,9 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
+using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account
 {
+    [Authorize]
     public class ProfileModel : PageModel
     {
         [BindProperty]
@@ -15,10 +20,23 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         private void PopulateProfile()
         {
-            profile.FirstName = "John";
-            profile.LastName = "Doe";
-            profile.Email = "johndoe@gmail.com";
-            profile.LastLoginTime = DateTime.Now;
+            string email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
+            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "SELECT FirstName, LastName, Email, LastLoginTime FROM Users WHERE Email=@email";
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                cmd.Parameters.AddWithValue("@email", email);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    profile.FirstName = reader.GetString(0);
+                    profile.LastName = reader.GetString(1);
+                    profile.Email = email;
+                    profile.LastLoginTime = reader.GetDateTime(3);
+                }
+            }
         }
     }
 }
