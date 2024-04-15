@@ -16,23 +16,30 @@ namespace SFAMarketplaceWEB.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                if (UsernameDoesNotExist(NewUser.Username))
+                if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
                     RegisterUser();
                     return RedirectToPage("Login");
                 }
                 else
                 {
-                    ModelState.AddModelError("RegisterError", "This username is already taken.");
+                    if (!UsernameDoesNotExist(NewUser.Username))
+                    {
+                        ModelState.AddModelError("RegisterError", "This username is already taken.");
+                    }
+                    if (!EmailDoesNotExist(NewUser.Email))
+                    {
+                        ModelState.AddModelError("RegisterError", "This email is already taken.");
+                    }
                     return Page();
                 }
-
             }
             else
             {
                 return Page();
             }
         }
+
 
         private void RegisterUser()
         {
@@ -74,6 +81,24 @@ namespace SFAMarketplaceWEB.Pages.Account
                 }
             }
         }
+
+        private bool EmailDoesNotExist(string email)
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "SELECT * FROM Users WHERE Email = @Email";
+                using (var cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Email", email);
+                    conn.Open();
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        return !reader.HasRows;
+                    }
+                }
+            }
+        }
+
 
 
 
