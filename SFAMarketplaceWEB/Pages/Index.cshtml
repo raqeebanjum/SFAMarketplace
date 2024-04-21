@@ -2,7 +2,9 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
+
 
 <div class="text-center">
     <h1 class="display-4">Welcome to SFA Marketplace</h1>
