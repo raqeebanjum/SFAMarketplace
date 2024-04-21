@@ -6,9 +6,11 @@ using System;
 using System.Collections.Generic;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    [Authorize]
     [BindProperties]
     public class AddItemModel : PageModel
     {

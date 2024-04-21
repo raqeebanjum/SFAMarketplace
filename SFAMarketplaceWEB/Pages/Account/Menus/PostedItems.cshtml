@@ -1,6 +1,8 @@
 ﻿@page
 @model SFAMarketplaceWEB.Pages.Account.Menus.PostedItemsModel
-
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
 @section Styles {
     <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
 }
