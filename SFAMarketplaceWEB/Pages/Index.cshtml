@@ -3,15 +3,19 @@
 @{
     ViewData["Title"] = "Home page";
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+
 }
 
+<div class="p-6 m-6 rounded-lg shadow-lg bg-base-200 text-center">
+    <h1 class="text-5xl font-bold">Welcome to SFA Marketplace</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to SFA Marketplace</h1>
+    <p class="py-6">A one-stop shop for all your marketplace needs!</p>
 
-   
-    <p>In testing:</p>
-    <a asp-area="" asp-page="/Account/Menus/AddItem" class="btn btn-primary">Add Items</a>
-    <a asp-area="" asp-page="/Account/Menus/PostedItems" class="btn btn-primary">Posted Items</a>
-
+    <div class="pt-6 space-x-2">
+        <a asp-area="" asp-page="/Account/Menus/AddItem" class="btn btn-primary">Add Items</a>
+        <a asp-area="" asp-page="/Account/Menus/PostedItems" class="btn btn-secondary">Posted Items</a>
+    </div>
 </div>
+
+
+
