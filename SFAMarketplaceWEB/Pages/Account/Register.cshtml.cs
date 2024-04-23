@@ -14,6 +14,12 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
+            if (NewUser.Password != null && NewUser.Password.Length < 10)
+            {
+                ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
+                return Page();
+            }
+
             if (ModelState.IsValid)
             {
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
