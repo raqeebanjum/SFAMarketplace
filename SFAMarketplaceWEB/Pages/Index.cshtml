@@ -5,17 +5,34 @@
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/Index.css" />
+}
 
-<div class="p-6 m-6 rounded-lg shadow-lg bg-base-200 text-center">
+
+<div class="text-center">
     <h1 class="text-5xl font-bold">Welcome to SFA Marketplace</h1>
 
-    <p class="py-6">A one-stop shop for all your marketplace needs!</p>
+    <h3 class="py-6">A one-stop shop for all your marketplace needs!</h3>
 
-    <div class="pt-6 space-x-2">
-        <a asp-area="" asp-page="/Account/Menus/AddItem" class="btn btn-primary">Add Items</a>
-        <a asp-area="" asp-page="/Account/Menus/PostedItems" class="btn btn-secondary">Posted Items</a>
-    </div>
 </div>
 
-
-
+<div class="container mt-3">
+    <div class="row">
+        @foreach (var item in Model.items)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="image-placeholder">
+                        Image Placeholder
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ItemName</h5>
+                        <p class="card-text">Price: @item.ItemPrice.ToString("C2")</p>
+                        <a asp-page="EditItem" asp-route-id="@item.ItemID" class="btn btn-primary">Edit</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
