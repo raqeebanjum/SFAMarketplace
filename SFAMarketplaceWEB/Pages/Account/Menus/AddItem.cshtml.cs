@@ -62,25 +62,30 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
-                INSERT INTO Item (UserID, ItemName, ItemDescription, ItemPrice, CategoryID, ItemTradeStatus, DatePosted)
-                VALUES (@UserID, @ItemName, @ItemDescription, @ItemPrice, @CategoryID, @ItemTradeStatus, @DatePosted)";
+        INSERT INTO Item (UserID, ItemName, ItemDescription, ItemPrice, CategoryID, ItemTradeStatus, DatePosted, ItemPhotoURL1, ItemPhotoURL2, ItemPhotoURL3)
+        VALUES (@UserID, @ItemName, @ItemDescription, @ItemPrice, @CategoryID, @ItemTradeStatus, @DatePosted, @ItemPhotoURL1, @ItemPhotoURL2, @ItemPhotoURL3)";
 
                 using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                 {
-                    // setting UserID to be 1 for all items during testing
-                    cmd.Parameters.AddWithValue("@UserID", 1);
+                    var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                    cmd.Parameters.AddWithValue("@UserID", userId);
                     cmd.Parameters.AddWithValue("@ItemName", NewItem.ItemName);
                     cmd.Parameters.AddWithValue("@ItemDescription", NewItem.ItemDescription);
                     cmd.Parameters.AddWithValue("@ItemPrice", NewItem.ItemPrice);
                     cmd.Parameters.AddWithValue("@CategoryID", NewItem.CategoryID ?? (object)DBNull.Value);
                     cmd.Parameters.AddWithValue("@ItemTradeStatus", NewItem.ItemTradeStatus);
                     cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@ItemPhotoURL1", NewItem.ItemPhotoURL1 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ItemPhotoURL2", NewItem.ItemPhotoURL2 ?? (object)DBNull.Value);
+                    cmd.Parameters.AddWithValue("@ItemPhotoURL3", NewItem.ItemPhotoURL3 ?? (object)DBNull.Value);
 
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
             }
         }
+
+
 
 
 

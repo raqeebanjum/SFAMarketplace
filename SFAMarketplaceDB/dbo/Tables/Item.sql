@@ -4,6 +4,8 @@
     [ItemName]        VARCHAR (50)    NULL,
     [ItemDescription] VARCHAR (1500)  NULL,
     [ItemPhotoURL1]   VARCHAR (200)   NULL,
+    [ItemPhotoURL2]   VARCHAR (200)   NULL,
+    [ItemPhotoURL3]   VARCHAR (200)   NULL,
     [ItemPrice]       DECIMAL (10, 2) NULL,
     [CategoryID]      INT             NULL, 
     [ItemTradeStatus] BIT             NULL,
