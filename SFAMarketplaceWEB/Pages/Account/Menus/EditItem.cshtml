@@ -40,13 +40,21 @@
             <span asp-validation-for="Item.ItemDescription" class="text-danger"></span>
         </div>
 
-        @*
         <div class="form-group">
-        <label asp-for="Item.ItemPhotoURL1">Photo</label>
-        <input type="file" asp-for="Item.ItemPhotoURL1" class="form-control" />
-        <span asp-validation-for="Item.ItemPhotoURL1" class="text-danger"></span>
+            <label asp-for="Item.ItemPhotoURL1"></label>
+            <input asp-for="Item.ItemPhotoURL1" class="form-control" />
+            <span asp-validation-for="Item.ItemPhotoURL1" class="text-danger"></span>
         </div>
-        *@
+        <div class="form-group">
+            <label asp-for="Item.ItemPhotoURL2"></label>
+            <input asp-for="Item.ItemPhotoURL2" class="form-control" />
+            <span asp-validation-for="Item.ItemPhotoURL2" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Item.ItemPhotoURL3"></label>
+            <input asp-for="Item.ItemPhotoURL3" class="form-control" />
+            <span asp-validation-for="Item.ItemPhotoURL3" class="text-danger"></span>
+        </div>
 
 
 
