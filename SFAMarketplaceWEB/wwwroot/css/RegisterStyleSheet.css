@@ -4,7 +4,7 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #654ea3, #eaafc8);
+    background-color: #282a36;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -41,7 +41,6 @@ form {
     backdrop-filter: blur(10px);
 }
 
-/* Styles for input fields with placeholders instead of labels */
 .form-group input[type="text"],
 .form-group input[type="email"],
 .form-group input[type="password"] {
