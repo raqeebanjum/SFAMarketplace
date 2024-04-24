@@ -25,7 +25,7 @@ namespace SFAMarketplaceWEB.Pages.Account
             {
                 if (ValidateCredentials())
                 {
-                    return RedirectToPage("Profile");
+                    return RedirectToPage("/Account/Menus/PostedItems");
                 }
                 else
                 {
