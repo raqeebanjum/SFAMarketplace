@@ -31,7 +31,7 @@ namespace SFAMarketplaceWEB.Pages
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
-                SELECT ItemID, UserID, ItemName, ItemDescription, ItemPrice, CategoryID, ItemTradeStatus, DatePosted
+                SELECT ItemID, UserID, ItemName, ItemDescription, ItemPrice, ItemPhotoURL1, CategoryID, ItemTradeStatus, DatePosted
                 FROM Item
                 ORDER BY NEWID()";
 
@@ -47,6 +47,7 @@ namespace SFAMarketplaceWEB.Pages
                         ItemName = reader.GetString("ItemName"),
                         ItemDescription = reader.GetString("ItemDescription"),
                         ItemPrice = reader.GetDecimal("ItemPrice"),
+                        ItemPhotoURL1 = reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL1")) ? null : reader.GetString(reader.GetOrdinal("ItemPhotoURL1")),
                         CategoryID = reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("CategoryID")),
                         ItemTradeStatus = reader.GetBoolean("ItemTradeStatus"),
                         DatePosted = reader.GetDateTime("DatePosted")
