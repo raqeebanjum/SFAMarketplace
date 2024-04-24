@@ -1,5 +1,10 @@
 ﻿/* ProfileStyleSheet.css */
 
+body, html {
+    background-color: #282a36;
+    color: black;
+}
+
 .profile-container {
     max-width: 800px;
     margin: 40px auto;
