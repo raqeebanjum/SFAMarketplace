@@ -2,7 +2,7 @@
     height: 100%;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, #654ea3, #eaafc8);
+    background-color: #282a36;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 nav.navbar {
