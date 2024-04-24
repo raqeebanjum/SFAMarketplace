@@ -40,12 +40,5 @@ SET IDENTITY_INSERT [dbo].[Category] OFF
 GO
 SET IDENTITY_INSERT [dbo].[Item] ON 
 GO
-INSERT [dbo].[Item] ([ItemID], [UserID], [ItemName], [ItemDescription], [ItemPhotoURL1], [ItemPrice], [CategoryID], [ItemTradeStatus], [DatePosted]) VALUES (1, NULL, N'test', N'test', NULL, CAST(99.00 AS Decimal(10, 2)), 12, 1, CAST(N'2024-04-13T19:47:17.747' AS DateTime))
-GO
-INSERT [dbo].[Item] ([ItemID], [UserID], [ItemName], [ItemDescription], [ItemPhotoURL1], [ItemPrice], [CategoryID], [ItemTradeStatus], [DatePosted]) VALUES (20, 1, N'Item 1 Category 1', N'Detailed description for Item 1 Category 1. This is one of the top items in this category providing exceptional value and performance.', NULL, CAST(102.10 AS Decimal(10, 2)), 1, 1, CAST(N'2024-04-13T20:08:04.590' AS DateTime))
-GO
-
-INSERT [dbo].[Item] ([ItemID], [UserID], [ItemName], [ItemDescription], [ItemPhotoURL1], [ItemPrice], [CategoryID], [ItemTradeStatus], [DatePosted]) VALUES (244, 1, N'Item 15 Category 15', N'Detailed description for Item 15 Category 15. This is one of the top items in this category providing exceptional value and performance.', NULL, CAST(795.54 AS Decimal(10, 2)), 15, 1, CAST(N'2024-04-13T20:08:04.590' AS DateTime))
-GO
 SET IDENTITY_INSERT [dbo].[Item] OFF
 GO
