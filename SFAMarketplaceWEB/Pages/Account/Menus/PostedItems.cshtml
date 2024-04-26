@@ -29,9 +29,12 @@
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
+                    <!-- Making the image a clickable link -->
                     @if (!string.IsNullOrEmpty(item.ItemPhotoURL1))
                     {
-                        <img src="@item.ItemPhotoURL1" alt="Item Image" class="card-img-top" />
+                        <a asp-page="ViewItem" asp-route-itemId="@item.ItemID">
+                            <img src="@item.ItemPhotoURL1" alt="Item Image" class="card-img-top" />
+                        </a>
                     }
                     else
                     {
@@ -47,6 +50,7 @@
                 </div>
             </div>
         }
+
 
     </div>
 </div>
