@@ -22,7 +22,16 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         public void OnGet()
         {
             PopulateCategoryDDL();
-
+            if (Categories.Any()) // Check if there are any categories
+            {
+                SelectedCategoryID = int.Parse(Categories.First().Value); // Automatically select the first category
+                PopulateItem(SelectedCategoryID); // Load items for the first category
+            }
+            else
+            {
+                // Handle the case where no categories are available
+                items = new List<Item>(); // Ensure the items list is initialized to prevent errors
+            }
         }
 
         public void OnPost()
