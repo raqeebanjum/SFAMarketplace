@@ -1,0 +1,36 @@
+﻿body {
+    background-color: #282a36;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.container {
+    max-width: 800px; /* Limit the width to keep everything centered */
+}
+
+.item-detail-box {
+    background-color: #333; /* Darker background for the content box */
+    color: white; /* White text for readability */
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.3); /* Deeper shadow for a prominent effect */
+}
+
+.carousel-inner img {
+    height: 400px; /* Limit the height of images in the carousel */
+    object-fit: cover; /* Ensures images cover the area nicely without distortion */
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    filter: invert(1); /* Make carousel controls visible against dark images */
+}
+
+.btn-primary {
+    width: 200px; /* Uniform button width */
+    font-size: 16px; /* Larger font size for better visibility */
+}
+
+.item-info p {
+    margin-bottom: 10px; /* Spacing between paragraphs */
+}
