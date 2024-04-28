@@ -14,6 +14,9 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         public int SellerID { get; set; }
 
         public double AverageRating { get; set; }
+
+        public Dictionary<int, double> RatingDistribution { get; set; }
+
         public List<Review> SellerReviews { get; set; } = new List<Review>();
 
         public void OnGet(int sellerId)
@@ -24,6 +27,26 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             if (SellerReviews.Any())
             {
                 AverageRating = SellerReviews.Average(review => review.Rating);
+            }
+            CalculateRatingDistribution();
+
+        }
+
+        private void CalculateRatingDistribution()
+        {
+            RatingDistribution = new Dictionary<int, double>();
+
+            if (SellerReviews.Any())
+            {
+                AverageRating = SellerReviews.Average(review => review.Rating);
+
+                var maxRating = 5; // Assuming 5 is the max rating
+                for (int i = 1; i <= maxRating; i++)
+                {
+                    var count = SellerReviews.Count(r => r.Rating == i);
+                    var percentage = (count / (double)SellerReviews.Count) * 100;
+                    RatingDistribution.Add(i, percentage);
+                }
             }
         }
 
@@ -66,15 +89,16 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                         {
                             var review = new Review
                             {
-                                // Assuming your Review model has these properties
                                 ReviewID = reader.GetInt32(reader.GetOrdinal("ReviewID")),
                                 SellerID = reader.GetInt32(reader.GetOrdinal("SellerID")),
                                 BuyerID = reader.GetInt32(reader.GetOrdinal("BuyerID")),
-                                Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
+                                Rating = Convert.ToInt32(reader.GetString(reader.GetOrdinal("Rating"))),
                                 Comment = reader.GetString(reader.GetOrdinal("Comment")),
                                 TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
                             };
                             reviews.Add(review);
+
+
                         }
                     }
                 }

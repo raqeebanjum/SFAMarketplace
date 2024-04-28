@@ -24,34 +24,38 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public IActionResult OnPost()
         {
-            // Fetch the seller's name again in case the page needs to be re-rendered
-            SellerName = GetSellerName(NewReview.SellerID);
-
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                // If validation fails, the page is returned, make sure to reload any necessary data
-                return Page();
+                SaveReviewToDatabase(NewReview);
+                return RedirectToPage("ViewReview");
             }
-
-            // Save the new review to the database
-            SaveReviewToDatabase(NewReview);
-
-            // Redirect to the ViewReviews page for the seller after posting the review
-            return RedirectToPage("/Account/Menus/ViewReview", new { sellerId = NewReview.SellerID });
+            return Page();
         }
+
+
 
         private string GetSellerName(int sellerId)
         {
-            using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
-            {
-                string query = "SELECT Username FROM Users WHERE UserID = @UserID";
-                SqlCommand cmd = new SqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@UserID", sellerId);
-                connection.Open();
-                var result = cmd.ExecuteScalar();
-                return result != null ? result.ToString() : "Unknown Seller";
+           
+                using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    string query = "SELECT Username FROM Users WHERE UserID = @UserID";
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@UserID", sellerId);
+                    connection.Open();
+                    var result = cmd.ExecuteScalar();
+
+                if (result != null)
+                {
+                    return result.ToString(); // Convert the result to string and return it
+                }
+                else
+                {
+                    return "Unknown"; // Return a default value if the query returns null
+                }
             }
         }
+
 
         private void SaveReviewToDatabase(Review review)
         {

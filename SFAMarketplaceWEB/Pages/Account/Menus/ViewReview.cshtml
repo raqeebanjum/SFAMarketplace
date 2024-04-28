@@ -4,22 +4,67 @@
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 
 }
-<h2>Reviews for @Model.PostedBy</h2>
+@section Styles {
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="~/css/ViewReview.css" />
+}
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Reviews for @Model.PostedBy</h2>
 
-@if (Model.SellerReviews.Any())
-{
-    <p>Average Rating: @Model.AverageRating.ToString("N2")</p>
-    foreach (var review in Model.SellerReviews)
-    {
-        <div>
-            <p>Rating: @review.Rating - @review.Comment</p>
-            <p>Date: @review.TransactionDate.ToShortDateString()</p>
+    <!-- Average Rating and Rating Distribution -->
+    <div class="row">
+        <div class="col-lg-4 mb-3">
+            <!-- Average Rating Box -->
+            <div class="average-rating-box p-3 rounded text-center">
+                <h3>Average Rating</h3>
+                <div class="display-6">@Model.AverageRating.ToString("0.0")</div>
+                <p>out of 5</p>
+            </div>
         </div>
-    }
-}
-else
-{
-    <p>No reviews yet.</p>
-}
+        <div class="col-lg-8 mb-3">
+            <!-- Rating Distribution -->
+            <h3 class="mb-3">Rating Distribution</h3>
+            @for (int i = 5; i >= 1; i--)
+            {
+                <div class="row mb-2 align-items-center">
+                    <div class="col-auto">
+                        @for (int star = 0; star < i; star++)
+                        {
+                            <i class="fas fa-star text-warning"></i>
+                        }
+                    </div>
+                    <div class="col">
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" style="width: @Model.RatingDistribution[i]%;" aria-valuenow="@Model.RatingDistribution[i]" aria-valuemin="0" aria-valuemax="100">
+                                @Model.RatingDistribution[i].ToString("0.##")%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
 
-<a asp-page="/Account/Menus/AddReview" asp-route-sellerId="@Model.SellerID">Write a Review</a>
+    <!-- Reviews List -->
+    <div class="mt-4">
+        <h3>Reviews</h3>
+        @foreach (var review in Model.SellerReviews)
+        {
+            <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
+                <div>
+                    <p>@review.Comment</p>
+                </div>
+                <div>
+                    <button class="btn btn-danger btn-sm">Report</button>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Write a Review Button -->
+    <div class="text-center my-4">
+        <a asp-page="/Account/Menus/AddReview" asp-route-sellerId="@Model.SellerID" class="btn btn-primary btn-lg">
+            Write a Review for @Model.PostedBy?
+        </a>
+    </div>
+</div>
