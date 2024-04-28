@@ -1,0 +1,37 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.AddReviewModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+
+<h2>Add a Review</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="NewReview.SellerID" class="control-label">Seller ID</label>
+        <input asp-for="NewReview.SellerID" class="form-control" />
+        <span asp-validation-for="NewReview.SellerID" class="text-danger"></span>
+    </div>
+
+  
+
+    <div class="form-group">
+        <label asp-for="NewReview.Rating" class="control-label">Rating</label>
+        <input asp-for="NewReview.Rating" class="form-control" type="number" min="1" max="5" />
+        <span asp-validation-for="NewReview.Rating" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewReview.Comment" class="control-label">Comment</label>
+        <textarea asp-for="NewReview.Comment" class="form-control"></textarea>
+        <span asp-validation-for="NewReview.Comment" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="NewReview.TransactionDate" class="control-label">Transaction Date</label>
+        <input asp-for="NewReview.TransactionDate" class="form-control" type="date" />
+        <span asp-validation-for="NewReview.TransactionDate" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
