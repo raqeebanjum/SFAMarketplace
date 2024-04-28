@@ -13,13 +13,22 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     public class AddReviewModel : PageModel
     {
         public Review NewReview { get; set; } = new Review();
+        public string SellerName { get; set; }
+        public int SellerID { get; set; }
+
+        public void OnGet(int sellerId)
+        {
+            SellerID = sellerId;
+            SellerName = GetSellerName(sellerId);
+        }
+
         public IActionResult OnPost()
         {
 
             if (ModelState.IsValid)
             {
                 SaveReviewDetails();
-                return RedirectToPage("PostedItems");
+                return RedirectToPage("ViewReview");
             }
             else
             {
@@ -28,6 +37,27 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
 
 
+        }
+        private string GetSellerName(int sellerId)
+        {
+            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                conn.Open();
+                string cmdText = "SELECT Username FROM Users WHERE UserID = @UserID";
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                cmd.Parameters.AddWithValue("@UserID", sellerId);
+
+                var result = cmd.ExecuteScalar(); // Use ExecuteScalar when you expect a single value
+                if (result != null && result != DBNull.Value)
+                {
+                    return result.ToString();
+                }
+                else
+                {
+                    // If there is no such user, or FullName is NULL, return a default value or handle accordingly
+                    return "Seller does not exist or name not provided";
+                }
+            }
         }
         private void SaveReviewDetails()
         {

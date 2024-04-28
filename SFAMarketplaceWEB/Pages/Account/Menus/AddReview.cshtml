@@ -4,15 +4,10 @@
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
 
-<h2>Add a Review</h2>
+<h2>Add a Review for @Model.SellerName</h2>
 
 <form method="post">
-    <div class="form-group">
-        <label asp-for="NewReview.SellerID" class="control-label">Seller ID</label>
-        <input asp-for="NewReview.SellerID" class="form-control" />
-        <span asp-validation-for="NewReview.SellerID" class="text-danger"></span>
-    </div>
-
+    <input type="hidden" asp-for="NewReview.SellerID" />
   
 
     <div class="form-group">
@@ -35,11 +30,7 @@
         <span asp-validation-for="NewReview.Comment" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label asp-for="NewReview.TransactionDate" class="control-label">Transaction Date</label>
-        <input asp-for="NewReview.TransactionDate" class="form-control" type="date" />
-        <span asp-validation-for="NewReview.TransactionDate" class="text-danger"></span>
-    </div>
+   
 
     <button type="submit" class="btn btn-primary">Submit Review</button>
 </form>
