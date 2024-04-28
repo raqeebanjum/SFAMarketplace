@@ -44,7 +44,7 @@
         <div class="item-info text-center my-4">
             <p><strong>Description:</strong> @Model.Item.ItemDescription</p>
             <p><strong>Price:</strong> $@Model.Item.ItemPrice.ToString("0.00")</p>
-            <p><strong>Posted By:</strong> @Model.PostedBy</p>
+            <p><strong>Posted By:</strong> <a asp-page="/Account/Menus/ViewReview" asp-route-sellerId="@Model.Item.UserID">@Model.PostedBy</a></p>
             <p><strong>Date Posted:</strong> @Model.Item.DatePosted.ToString("MMMM dd, yyyy")</p>
             <p><strong>Trade Status:</strong> @(Model.Item.ItemTradeStatus ? "Accepting Trades" : "Not Accepting Trades")</p>
         </div>

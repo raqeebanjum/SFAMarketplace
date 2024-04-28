@@ -1,0 +1,21 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.ViewReviewModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+
+}
+<h2>Reviews for @Model.PostedBy</h2>
+
+@if (Model.SellerReviews.Any())
+{
+    foreach (var review in Model.SellerReviews)
+    {
+        <p>Rating: @review.Rating - @review.Comment</p>
+    }
+}
+else
+{
+    <p>No reviews yet.</p>
+}
+
+<a asp-page="/Account/Menus/AddReview" asp-route-sellerId="@Model.SellerID">Write a Review</a>
