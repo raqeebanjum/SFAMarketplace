@@ -2,7 +2,7 @@
     [ReviewID]        INT           IDENTITY (1, 1) NOT NULL,
     [SellerID]        INT           NULL,
     [BuyerID]         INT           NULL,
-    [Rating]          VARCHAR (50)  NULL,
+    [Rating]          INT           NULL,
     [Comment]         VARCHAR (100) NULL,
     [TransactionDate] DATETIME      NULL,
     PRIMARY KEY CLUSTERED ([ReviewID] ASC),

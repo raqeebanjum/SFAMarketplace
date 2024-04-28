@@ -1,4 +1,6 @@
-﻿namespace SFAMarketplaceWEB.Model
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SFAMarketplaceWEB.Model
 {
     public class Review
     {
@@ -9,6 +11,7 @@
 
         public int Rating { get; set; }
 
+        [Required]
         public string Comment { get; set; }
 
         public DateTime TransactionDate { get; set; }

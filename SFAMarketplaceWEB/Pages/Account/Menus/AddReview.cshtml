@@ -4,11 +4,11 @@
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
 
-<h2>Add a Review for @Model.SellerName</h2>
 
 <form method="post">
     <input type="hidden" asp-for="NewReview.SellerID" />
-  
+    <h2 class="text-center mb-4">Reviews for @Model.SellerName</h2>
+
 
     <div class="form-group">
         <label asp-for="NewReview.Rating" class="control-label">Rating</label>

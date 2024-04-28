@@ -27,7 +27,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             if (ModelState.IsValid)
             {
                 SaveReviewToDatabase(NewReview);
-                return RedirectToPage("ViewReview");
+                // Pass the sellerId as a route value
+                return RedirectToPage("ViewReview", new { sellerId = NewReview.SellerID });
             }
             return Page();
         }
@@ -53,7 +54,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 {
                     return "Unknown"; // Return a default value if the query returns null
                 }
-            }
+                }
         }
 
 

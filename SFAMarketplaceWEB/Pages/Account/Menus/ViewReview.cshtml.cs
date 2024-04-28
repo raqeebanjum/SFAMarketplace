@@ -32,46 +32,53 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         }
 
+
         private void CalculateRatingDistribution()
         {
             RatingDistribution = new Dictionary<int, double>();
 
+            var maxRating = 5; // Assuming 5 is the max rating
+            // Initialize the distribution dictionary with 0 for all possible ratings
+            for (int i = 1; i <= maxRating; i++)
+            {
+                RatingDistribution[i] = 0;
+            }
+
             if (SellerReviews.Any())
             {
-                AverageRating = SellerReviews.Average(review => review.Rating);
-
-                var maxRating = 5; // Assuming 5 is the max rating
-                for (int i = 1; i <= maxRating; i++)
+                foreach (var review in SellerReviews)
                 {
-                    var count = SellerReviews.Count(r => r.Rating == i);
-                    var percentage = (count / (double)SellerReviews.Count) * 100;
-                    RatingDistribution.Add(i, percentage);
+                    int rating = review.Rating; // Rating is now directly an integer
+                    if (RatingDistribution.ContainsKey(rating))
+                    {
+                        var count = SellerReviews.Count(r => r.Rating == rating);
+                        var percentage = (count / (double)SellerReviews.Count) * 100;
+                        RatingDistribution[rating] = percentage;
+                    }
                 }
             }
         }
 
+
         private string GetSellerName(int sellerId)
         {
-            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                conn.Open();
-                string cmdText = "SELECT Username FROM Users WHERE UserID = @UserID";
-                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                string query = "SELECT Username FROM Users WHERE UserID = @UserID";
+                SqlCommand cmd = new SqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@UserID", sellerId);
-
-                var result = cmd.ExecuteScalar(); // Use ExecuteScalar when you expect a single value
+                connection.Open();
+                var result = cmd.ExecuteScalar();
                 if (result != null && result != DBNull.Value)
                 {
                     return result.ToString();
                 }
                 else
                 {
-                    // If there is no such user, or FullName is NULL, return a default value or handle accordingly
-                    return "Seller does not exist or name not provided";
+                    return "Unknown Seller"; // Default value if the seller is not found
                 }
             }
         }
-
         private List<Review> GetReviewsForSeller(int sellerId)
         {
             var reviews = new List<Review>();
@@ -92,7 +99,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                                 ReviewID = reader.GetInt32(reader.GetOrdinal("ReviewID")),
                                 SellerID = reader.GetInt32(reader.GetOrdinal("SellerID")),
                                 BuyerID = reader.GetInt32(reader.GetOrdinal("BuyerID")),
-                                Rating = Convert.ToInt32(reader.GetString(reader.GetOrdinal("Rating"))),
+                                Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
                                 Comment = reader.GetString(reader.GetOrdinal("Comment")),
                                 TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
                             };
