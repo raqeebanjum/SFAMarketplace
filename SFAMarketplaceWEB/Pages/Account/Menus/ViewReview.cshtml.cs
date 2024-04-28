@@ -12,6 +12,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         // Assuming you have a User model that includes user-related information
         public string PostedBy { get; set; }
         public int SellerID { get; set; }
+
+        public double AverageRating { get; set; }
         public List<Review> SellerReviews { get; set; } = new List<Review>();
 
         public void OnGet(int sellerId)
@@ -19,6 +21,10 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             SellerID = sellerId;
             PostedBy = GetSellerName(sellerId);
             SellerReviews = GetReviewsForSeller(sellerId);
+            if (SellerReviews.Any())
+            {
+                AverageRating = SellerReviews.Average(review => review.Rating);
+            }
         }
 
         private string GetSellerName(int sellerId)

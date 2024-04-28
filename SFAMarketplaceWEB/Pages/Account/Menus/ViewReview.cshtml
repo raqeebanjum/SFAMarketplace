@@ -8,9 +8,13 @@
 
 @if (Model.SellerReviews.Any())
 {
+    <p>Average Rating: @Model.AverageRating.ToString("N2")</p>
     foreach (var review in Model.SellerReviews)
     {
-        <p>Rating: @review.Rating - @review.Comment</p>
+        <div>
+            <p>Rating: @review.Rating - @review.Comment</p>
+            <p>Date: @review.TransactionDate.ToShortDateString()</p>
+        </div>
     }
 }
 else
