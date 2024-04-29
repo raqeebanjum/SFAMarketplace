@@ -12,6 +12,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         // Assuming you have a User model that includes user-related information
         public string PostedBy { get; set; }
         public int SellerID { get; set; }
+        public string ReviewerName { get; set; } 
 
         public double AverageRating { get; set; }
 
@@ -27,9 +28,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             if (SellerReviews.Any())
             {
                 AverageRating = SellerReviews.Average(review => review.Rating);
+                CalculateRatingDistribution();
             }
-            CalculateRatingDistribution();
-
         }
 
 
@@ -82,11 +82,14 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         private List<Review> GetReviewsForSeller(int sellerId)
         {
             var reviews = new List<Review>();
-            // Replace with your actual database access logic
             using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 connection.Open();
-                string query = "SELECT * FROM Reviews WHERE SellerID = @SellerID";
+                string query = @"
+                SELECT r.ReviewID, r.SellerID, r.BuyerID, r.Rating, r.Comment, r.TransactionDate, u.Username AS ReviewerName
+                FROM Reviews r
+                INNER JOIN Users u ON r.BuyerID = u.UserID
+                WHERE r.SellerID = @SellerID";
                 using (var command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@SellerID", sellerId);
@@ -94,7 +97,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         while (reader.Read())
                         {
-                            var review = new Review
+                            reviews.Add(new Review
                             {
                                 ReviewID = reader.GetInt32(reader.GetOrdinal("ReviewID")),
                                 SellerID = reader.GetInt32(reader.GetOrdinal("SellerID")),
@@ -102,10 +105,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                                 Rating = reader.GetInt32(reader.GetOrdinal("Rating")),
                                 Comment = reader.GetString(reader.GetOrdinal("Comment")),
                                 TransactionDate = reader.GetDateTime(reader.GetOrdinal("TransactionDate")),
-                            };
-                            reviews.Add(review);
-
-
+                                ReviewerName = reader.GetString(reader.GetOrdinal("ReviewerName")), // Added reviewer's name
+                            });
                         }
                     }
                 }

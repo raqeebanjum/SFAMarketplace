@@ -3,6 +3,10 @@
 @{
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddReviewStyleSheet.css" />
+}
+
 
 
 <form method="post">

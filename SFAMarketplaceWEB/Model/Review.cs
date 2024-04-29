@@ -16,6 +16,6 @@ namespace SFAMarketplaceWEB.Model
 
         public DateTime TransactionDate { get; set; }
 
-
+        public string ReviewerName { get; set; }
     }
 }

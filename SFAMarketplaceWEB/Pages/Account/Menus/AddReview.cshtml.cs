@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
+using System;
 using System.Security.Claims;
 using Microsoft.Data.SqlClient;
 
@@ -12,7 +13,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     public class AddReviewModel : PageModel
     {
         [BindProperty]
-        public Review NewReview { get; set; } = new Review();
+        public ReviewSubmission NewReview { get; set; } = new ReviewSubmission();
 
         public string SellerName { get; set; }
 
@@ -26,48 +27,46 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         {
             if (ModelState.IsValid)
             {
-                SaveReviewToDatabase(NewReview);
-                // Pass the sellerId as a route value
-                return RedirectToPage("ViewReview", new { sellerId = NewReview.SellerID });
+                try
+                {
+                    SaveReviewToDatabase(NewReview);
+                    return RedirectToPage("ViewReview", new { sellerId = NewReview.SellerID });
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "An error occurred while saving the review: " + ex.Message);
+                }
             }
             return Page();
         }
 
-
-
         private string GetSellerName(int sellerId)
-        {
-           
-                using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
-                {
-                    string query = "SELECT Username FROM Users WHERE UserID = @UserID";
-                    SqlCommand cmd = new SqlCommand(query, connection);
-                    cmd.Parameters.AddWithValue("@UserID", sellerId);
-                    connection.Open();
-                    var result = cmd.ExecuteScalar();
-
-                if (result != null)
-                {
-                    return result.ToString(); // Convert the result to string and return it
-                }
-                else
-                {
-                    return "Unknown"; // Return a default value if the query returns null
-                }
-                }
-        }
-
-
-        private void SaveReviewToDatabase(Review review)
         {
             using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string query = "INSERT INTO Reviews (SellerID, BuyerID, Rating, Comment, TransactionDate) VALUES (@SellerID, @BuyerID, @Rating, @Comment, GETDATE())";
+                string query = "SELECT Username FROM Users WHERE UserID = @UserID";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@UserID", sellerId);
+                connection.Open();
+                var result = cmd.ExecuteScalar();
+
+                return result != null ? result.ToString() : "Unknown";
+            }
+        }
+
+        private void SaveReviewToDatabase(ReviewSubmission review)
+        {
+            using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+                string query = "INSERT INTO Reviews (SellerID, BuyerID, Rating, Comment, TransactionDate) VALUES (@SellerID, @BuyerID, @Rating, @Comment, @TransactionDate)";
                 SqlCommand cmd = new SqlCommand(query, connection);
                 cmd.Parameters.AddWithValue("@SellerID", review.SellerID);
-                cmd.Parameters.AddWithValue("@BuyerID", int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)));
+                cmd.Parameters.AddWithValue("@BuyerID", userId);
                 cmd.Parameters.AddWithValue("@Rating", review.Rating);
                 cmd.Parameters.AddWithValue("@Comment", review.Comment);
+                cmd.Parameters.AddWithValue("@TransactionDate", review.TransactionDate);
 
                 connection.Open();
                 cmd.ExecuteNonQuery();
