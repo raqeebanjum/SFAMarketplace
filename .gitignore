@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/SFAMarketplaceWEB/Pages/Account/Menus/DeleteItem.cshtml

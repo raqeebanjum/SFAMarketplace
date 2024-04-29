@@ -16,7 +16,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public double AverageRating { get; set; }
 
-        public Dictionary<int, double> RatingDistribution { get; set; }
+        public Dictionary<int, double>? RatingDistribution { get; set; }
 
         public List<Review> SellerReviews { get; set; } = new List<Review>();
 
@@ -25,12 +25,11 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             SellerID = sellerId;
             PostedBy = GetSellerName(sellerId);
             SellerReviews = GetReviewsForSeller(sellerId);
-            if (SellerReviews.Any())
-            {
-                AverageRating = SellerReviews.Average(review => review.Rating);
-                CalculateRatingDistribution();
-            }
+            AverageRating = SellerReviews.Any() ? SellerReviews.Average(review => review.Rating) : 0;
+
+            CalculateRatingDistribution(); // This will initialize RatingDistribution even if there are no reviews.
         }
+
 
 
         private void CalculateRatingDistribution()
@@ -38,26 +37,24 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             RatingDistribution = new Dictionary<int, double>();
 
             var maxRating = 5; // Assuming 5 is the max rating
-            // Initialize the distribution dictionary with 0 for all possible ratings
+                               // Initialize the distribution dictionary with 0 for all possible ratings
             for (int i = 1; i <= maxRating; i++)
             {
                 RatingDistribution[i] = 0;
             }
 
-            if (SellerReviews.Any())
+            foreach (var review in SellerReviews)
             {
-                foreach (var review in SellerReviews)
+                int rating = review.Rating;
+                if (RatingDistribution.ContainsKey(rating))
                 {
-                    int rating = review.Rating; // Rating is now directly an integer
-                    if (RatingDistribution.ContainsKey(rating))
-                    {
-                        var count = SellerReviews.Count(r => r.Rating == rating);
-                        var percentage = (count / (double)SellerReviews.Count) * 100;
-                        RatingDistribution[rating] = percentage;
-                    }
+                    var count = SellerReviews.Count(r => r.Rating == rating);
+                    var percentage = (count / (double)SellerReviews.Count) * 100;
+                    RatingDistribution[rating] = percentage;
                 }
             }
         }
+
 
 
         private string GetSellerName(int sellerId)
