@@ -1,0 +1,45 @@
+﻿body, html {
+    background-color: #282a36;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+page-header {
+    margin-bottom: 2rem; /* Adjust the value as needed */
+}
+
+/* Center the text inside the Rating Distribution column */
+.rating-distribution-header {
+    text-align: center; /* Center align the text */
+    margin-bottom: 1rem; /* Add some margin below the header text */
+}
+
+
+
+.average-rating-box {
+    background-color: #4a4e69; /* A contrasting background color */
+    color: #f8f9fa; /* Light text color for readability */
+    border: 1px solid #f8f9fa; /* Optional: adds a border */
+}
+
+.rating-distribution .row {
+    margin-right: 0; /* Reset right margin if needed */
+}
+
+.rating-distribution .progress {
+    height: 1rem; /* Set a fixed height for progress bars */
+}
+
+.fas.fa-star {
+    margin-right: 0.25rem; /* Space out stars a bit */
+}
+
+/* Responsive adjustments might be necessary for smaller screens */
+@media (max-width: 768px) {
+    .rating-distribution .row {
+        flex-direction: column; /* Stack star icons and progress bar on top of each other on small screens */
+    }
+
+    .rating-distribution .col-auto {
+        margin-bottom: 0.5rem; /* Add some space between the stars and progress bar on small screens */
+    }
+}
