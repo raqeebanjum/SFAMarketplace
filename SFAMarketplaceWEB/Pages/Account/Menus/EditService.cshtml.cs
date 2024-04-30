@@ -28,7 +28,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
                 {
                     string cmdText = @"
-                    UPDATE Service
+                    UPDATE Services
                     SET ServiceName = @ServiceName,
                         ServiceDescription = @ServiceDescription,
                         ServiceRate = @ServiceRate,
@@ -39,7 +39,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         cmd.Parameters.AddWithValue("@ServiceName", Service.ServiceName);
                         cmd.Parameters.AddWithValue("@ServiceDescription", Service.ServiceDescription);
-                        cmd.Parameters.AddWithValue("@ItemPrice", Service.ServiceRate);
+                        cmd.Parameters.AddWithValue("@ServiceRate", Service.ServiceRate);
                         cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
                         cmd.Parameters.AddWithValue("@serviceId", id);
 
@@ -61,7 +61,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             {
                 string cmdText = @"
             SELECT ServiceId, ServiceName, ServiceDescription, ServiceRate 
-            FROM Service 
+            FROM Services 
             WHERE ServiceId=@serviceid";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@serviceId", id);
