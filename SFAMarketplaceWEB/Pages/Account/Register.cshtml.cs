@@ -4,6 +4,8 @@ using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
 using System;
+using System.Text.RegularExpressions;
+
 
 namespace SFAMarketplaceWEB.Pages.Account
 {
@@ -14,12 +16,30 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
-            if (NewUser.Password != null && NewUser.Password.Length < 10)
-            {
-                ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
-                return Page();
-            }
 
+            var hasNumber = new Regex(@"[0-9]+");
+            // Regular expression to check for upper case and lower case letters
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasLowerChar = new Regex(@"[a-z]+");
+
+            if (NewUser.Password != null)
+            {
+                if (NewUser.Password.Length < 10)
+                {
+                    ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
+                    return Page();
+                }
+                if (!hasNumber.IsMatch(NewUser.Password))
+                {
+                    ModelState.AddModelError("RegisterError", "Password must include at least one number.");
+                    return Page();
+                }
+                if (!hasUpperChar.IsMatch(NewUser.Password) || !hasLowerChar.IsMatch(NewUser.Password))
+                {
+                    ModelState.AddModelError("RegisterError", "Password must include both upper and lower case letters.");
+                    return Page();
+                }
+            }
             if (ModelState.IsValid)
             {
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
