@@ -19,7 +19,7 @@
                         <h5 class="card-title">@service.ServiceName</h5>
                         <p class="card-text">Description: @service.ServiceDescription</p>
                         <p class="card-text">Service Rate($) / hour: @service.ServiceRate.ToString("c")</p>
-                        <a asp-page="EditService" asp-route-id="@service.ServiceID" class="btn btn-primary">Edit</a>
+                        <a asp-page="EditService" asp-route-id="@service.ServiceID" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
                     </div>
                 </div>
             </div>
