@@ -4,6 +4,7 @@ using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
 using System;
+using System.Text.RegularExpressions;
 
 namespace SFAMarketplaceWEB.Pages.Account
 {
@@ -14,11 +15,7 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
-            if (NewUser.Password != null && NewUser.Password.Length < 10)
-            {
-                ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
-                return Page();
-            }
+            ValidatePassword();
 
             if (ModelState.IsValid)
             {
@@ -46,6 +43,20 @@ namespace SFAMarketplaceWEB.Pages.Account
             }
         }
 
+        private ActionResult ValidatePassword()
+        {
+            var pattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}$";
+
+            if (NewUser.Password != null && !Regex.IsMatch(NewUser.Password, pattern))
+            {
+                ModelState.AddModelError("RegisterError", "Password must be at least 10 characters long, contain at least one number and have mixed upper-case letters and lower-case letters");
+                return Page();
+            }
+            else {
+                return Page(); 
+            }
+            
+        }
 
         private void RegisterUser()
         {
