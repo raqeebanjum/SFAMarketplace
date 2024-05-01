@@ -1,0 +1,32 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.EditServiceModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/AddServiceStyleSheet.css" />
+}
+
+<div class="service-form-container">
+    <h2>Edit Service</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Service.ServiceName" class="form-label">Service Name:</label>
+            <input asp-for="Service.ServiceName" class="form-control" />
+            <span asp-validation-for="Service.ServiceName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Service.ServiceDescription" class="form-label">Description:</label>
+            <textarea asp-for="Service.ServiceDescription" class="form-control"></textarea>
+            <span asp-validation-for="Service.ServiceDescription" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Service.ServiceRate" class="form-label">Service Rate($) / hour:</label>
+            <input asp-for="Service.ServiceRate" type="number" step="0.01" class="form-control" />
+            <span asp-validation-for="Service.ServiceRate" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary"><i class="bi bi-floppy"></i> Update</button>
+    </form>
+</div>
