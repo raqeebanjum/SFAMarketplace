@@ -6,7 +6,7 @@ namespace SFAMarketplaceWEB.Model
     public class Service
     {
         public int ServiceID { get; set; }
-        public int UserID { get; set; }
+        public int? UserID { get; set; }
 
         [Required(ErrorMessage = "Service name is required.")]
         public string ServiceName { get; set; }
