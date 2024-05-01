@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
     [Authorize]
-    public class CartPageModel : PageModel  // Renamed from Cart to CartPageModel
+    public class CartPageModel : PageModel 
     {
-        public Cart UserCart { get; set; } = new Cart();  // Now it's clear that this is a Cart object from your models
+        public Cart UserCart { get; set; } = new Cart(); 
 
         public void OnGet()
         {

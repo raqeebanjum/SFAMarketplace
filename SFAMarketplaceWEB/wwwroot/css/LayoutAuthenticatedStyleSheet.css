@@ -1,0 +1,67 @@
+﻿html {
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0; /* Remove default margin */
+}
+
+.main-content {
+    flex: 1 0 auto; /* The main content area should be flexible and grow to fill space */
+}
+
+.footer {
+    flex-shrink: 0; /* Footer should not shrink */
+    text-align: center; /* Centering footer content */
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+
+
+.navbar {
+    padding: 0.5rem 1rem; /* Consistent padding around the navbar */
+}
+
+    .navbar .btn:focus,
+    .navbar .btn:active:focus,
+    .navbar .btn-link.nav-link:focus,
+    .navbar .form-control:focus,
+    .navbar .form-check-input:focus {
+        box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    }
+
+    .navbar .nav-link {
+        display: flex;
+        align-items: center; /* Center alignment vertically */
+        justify-content: center; /* Center alignment horizontally */
+        padding: 8px 12px; /* Adjust padding as needed */
+        height: 100%; /* Fill the height */
+        color: black; /* Ensure the text color is visible */
+    }
+
+    .navbar .bi-cart2 {
+        font-size: 24px; /* Large size for the icon */
+        color: black; /* Color for the icon */
+    }
+
+    .navbar .navbar-collapse {
+        align-items: center; /* This ensures that all nav items are centered vertically */
+    }
+
+    .navbar .navbar-nav {
+        justify-content: flex-end; /* Ensures that nav items are aligned to the right */
+    }
+
+    .navbar .navbar-brand {
+        margin-right: auto; /* Pushes all other navbar items to the right */
+    }
