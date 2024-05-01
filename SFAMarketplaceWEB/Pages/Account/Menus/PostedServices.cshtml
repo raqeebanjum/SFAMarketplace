@@ -1,0 +1,28 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.PostedServicesModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
+}
+
+<h2>Posted Services</h2>
+
+<div class="container mt-3">
+    <div class="row">
+        @foreach (var service in Model.services)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@service.ServiceName</h5>
+                        <p class="card-text">Description: @service.ServiceDescription</p>
+                        <p class="card-text">Service Rate($) / hour: @service.ServiceRate.ToString("c")</p>
+                        <a asp-page="EditService" asp-route-id="@service.ServiceID" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
