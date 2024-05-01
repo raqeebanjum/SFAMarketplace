@@ -28,15 +28,10 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         {
             if (ModelState.IsValid)
             {
-                try
-                {
+                
                     SaveReviewToDatabase(NewReview);
                     return RedirectToPage("ViewReview", new { sellerId = NewReview.SellerID });
-                }
-                catch (Exception ex)
-                {
-                    ModelState.AddModelError(string.Empty, "An error occurred while saving the review: " + ex.Message);
-                }
+               
             }
             return Page();
         }

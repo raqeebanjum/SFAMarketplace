@@ -1,0 +1,48 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.MyItemsModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
+}
+@if (Model.myItems.Any())
+{
+    <div class="container mt-3">
+        <div class="row">
+            @foreach (var item in Model.myItems)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <!-- Making the image a clickable link -->
+                        @if (!string.IsNullOrEmpty(item.ItemPhotoURL1))
+                        {
+                            <a asp-page="ViewItem" asp-route-itemId="@item.ItemID">
+                                <img src="@item.ItemPhotoURL1" alt="Item Image" class="card-img-top" />
+                            </a>
+                        }
+                        else
+                        {
+                            <div class="image-placeholder">
+                                No Image Available
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ItemName</h5>
+                            <p class="card-text">Price: @item.ItemPrice.ToString("C2")</p>
+                            <a asp-page="EditItem" asp-route-id="@item.ItemID" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                        </div>
+                    </div>
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+}
+else
+{
+      <p>No posted items.</p>
+
+}
