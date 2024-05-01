@@ -3,54 +3,63 @@
 @{
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
+
 @section Styles {
     <link rel="stylesheet" href="~/css/ViewItemStyleSheet.css" />
 }
 
-
 <div class="container mt-5">
     <div class="item-detail-box shadow-lg p-4 mb-5 rounded">
-        <h2 class="text-center">@Model.Item.ItemName</h2>
+        @if (Model.Item != null)
+        {
+            <h2 class="text-center">@Model.Item.ItemName</h2>
 
-        <!-- Carousel for Images -->
-        <div id="itemImagesCarousel" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <img src="@Model.Item.ItemPhotoURL1" class="d-block w-100" alt="Image 1">
+            <!-- Carousel for Images -->
+            <div id="itemImagesCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="@Model.Item.ItemPhotoURL1" class="d-block w-100" alt="Image 1">
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Item.ItemPhotoURL2))
+                    {
+                        <div class="carousel-item">
+                            <img src="@Model.Item.ItemPhotoURL2" class="d-block w-100" alt="Image 2">
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Item.ItemPhotoURL3))
+                    {
+                        <div class="carousel-item">
+                            <img src="@Model.Item.ItemPhotoURL3" class="d-block w-100" alt="Image 3">
+                        </div>
+                    }
                 </div>
-                @if (!string.IsNullOrEmpty(Model.Item.ItemPhotoURL2))
-                {
-                    <div class="carousel-item">
-                        <img src="@Model.Item.ItemPhotoURL2" class="d-block w-100" alt="Image 2">
-                    </div>
-                }
-                @if (!string.IsNullOrEmpty(Model.Item.ItemPhotoURL3))
-                {
-                    <div class="carousel-item">
-                        <img src="@Model.Item.ItemPhotoURL3" class="d-block w-100" alt="Image 3">
-                    </div>
-                }
+                <button class="carousel-control-prev" type="button" data-bs-target="#itemImagesCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#itemImagesCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#itemImagesCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#itemImagesCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
 
-        <div class="item-info text-center my-4">
-            <p><strong>Description:</strong> @Model.Item.ItemDescription</p>
-            <p><strong>Price:</strong> $@Model.Item.ItemPrice.ToString("0.00")</p>
-            <p><strong>Posted By:</strong> <a asp-page="/Account/Menus/ViewReview" asp-route-sellerId="@Model.Item.UserID">@Model.PostedBy</a></p>
-            <p><strong>Date Posted:</strong> @Model.Item.DatePosted.ToString("MMMM dd, yyyy")</p>
-            <p><strong>Trade Status:</strong> @(Model.Item.ItemTradeStatus ? "Accepting Trades" : "Not Accepting Trades")</p>
-        </div>
+            <div class="item-info text-center my-4">
+                <p><strong>Description:</strong> @Model.Item.ItemDescription</p>
+                <p><strong>Price:</strong> $@Model.Item.ItemPrice.ToString("0.00")</p>
+                <p><strong>Posted By:</strong> <a asp-page="/Account/Menus/ViewReview" asp-route-sellerId="@Model.Item.UserID">@Model.PostedBy</a></p>
+                <p><strong>Date Posted:</strong> @Model.Item.DatePosted.ToString("MMMM dd, yyyy")</p>
+                <p><strong>Trade Status:</strong> @(Model.Item.ItemTradeStatus ? "Accepting Trades" : "Not Accepting Trades")</p>
+            </div>
 
-        <div class="text-center">
-            <button class="btn btn-primary">Add to Cart</button>
-        </div>
+            <div class="text-center">
+                <form method="post" asp-page-handler="AddToCart" asp-route-itemId="@Model.Item.ItemID">
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+            </div>
+        }
+        else
+        {
+            <p class="text-center">Item not found or unavailable.</p>
+        }
     </div>
 </div>

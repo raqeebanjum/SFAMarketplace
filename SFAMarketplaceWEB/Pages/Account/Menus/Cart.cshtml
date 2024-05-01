@@ -1,0 +1,48 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.CartPageModel
+
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/CartStyleSheet.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"; />
+}
+
+<h2>Your Cart</h2>
+
+@if (Model.UserCart.Item != null && Model.UserCart.Item.Count > 0)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-8">
+                @foreach (var cartItem in Model.UserCart.Item)
+                {
+                    <div class="item-card d-flex align-items-center">
+                        <div>
+                            <img src="@cartItem.Item.ItemPhotoURL1" alt="Item Image">
+                        </div>
+                        <div class="item-details">
+                            <h5>@cartItem.Item.ItemName</h5>
+                            <p>$@cartItem.Item.ItemPrice.ToString("N2")</p>
+                        </div>
+                        <div class="close-btn" aria-label="Remove item">
+                            <i class="bi bi-trash"></i>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-md-4">
+                <div class="total-section">
+                    <h4>Total: $@Model.UserCart.Item.Sum(item => item.Item.ItemPrice).ToString("N2")</h4>
+                    <button type="submit" class="btn btn-primary">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}

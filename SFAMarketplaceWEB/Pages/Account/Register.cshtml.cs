@@ -6,7 +6,6 @@ using SFAMarketplaceWEB.Models;
 using System;
 using System.Text.RegularExpressions;
 
-
 namespace SFAMarketplaceWEB.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -16,9 +15,7 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
-
             var hasNumber = new Regex(@"[0-9]+");
-            // Regular expression to check for upper case and lower case letters
             var hasUpperChar = new Regex(@"[A-Z]+");
             var hasLowerChar = new Regex(@"[a-z]+");
 
@@ -40,6 +37,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                     return Page();
                 }
             }
+
             if (ModelState.IsValid)
             {
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
@@ -65,7 +63,6 @@ namespace SFAMarketplaceWEB.Pages.Account
                 return Page();
             }
         }
-
 
         private void RegisterUser()
         {
@@ -124,10 +121,6 @@ namespace SFAMarketplaceWEB.Pages.Account
                 }
             }
         }
-
-
-
-
-
     }
 }
+

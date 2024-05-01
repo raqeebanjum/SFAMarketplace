@@ -1,4 +1,4 @@
-﻿@page
+@page
 @model SFAMarketplaceWEB.Pages.Account.ProfileModel
 @{
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
@@ -34,10 +34,10 @@
         <label>Last Login:</label>
         <span>@Model.profile.LastLoginTime.ToString("f")</span>
     </div>
-
     <div class="profile-footer">
         <!-- NOT FINISHED -->
         <p>(Editing profiles not finished yet)</p>
         <a class="btn btn-primary" href="/Account/Menus/EditProfile">Edit Profile</a> 
     </div>
+
 </div>

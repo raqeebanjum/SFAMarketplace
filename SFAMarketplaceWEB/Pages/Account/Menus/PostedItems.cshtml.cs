@@ -36,7 +36,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public void OnPost()
         {
-            PopulateCategoryDDL(); 
+            PopulateCategoryDDL();
             PopulateItem(SelectedCategoryID);
         }
 
@@ -45,16 +45,19 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         private void PopulateItem(int? categoryId)
         {
             items.Clear();
+            string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value; // Retrieve the current user's ID
 
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
-        SELECT ItemID, UserID, ItemName, ItemDescription, ItemPrice, ItemPhotoURL1, ItemPhotoURL2, ItemPhotoURL3, CategoryID, ItemTradeStatus, DatePosted
-        FROM Item
-        WHERE (CategoryID = @CategoryId OR @CategoryId IS NULL)";
+SELECT ItemID, UserID, ItemName, ItemDescription, ItemPrice, ItemPhotoURL1, ItemPhotoURL2, ItemPhotoURL3, CategoryID, ItemTradeStatus, DatePosted
+FROM Item
+WHERE (CategoryID = @CategoryId OR @CategoryId IS NULL)
+AND UserID != @CurrentUserID"; // Add a condition to exclude items posted by the current user
 
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@CategoryId", categoryId ?? (object)DBNull.Value);
+                cmd.Parameters.AddWithValue("@CurrentUserID", currentUserID); // Pass the current user's ID to the query
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -81,11 +84,12 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
 
 
+
         private void PopulateCategoryDDL()
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName"; 
+                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
