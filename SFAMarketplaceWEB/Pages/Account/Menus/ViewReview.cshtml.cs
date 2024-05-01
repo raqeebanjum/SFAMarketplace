@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -7,6 +8,8 @@ using System.Collections.Generic;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    [Authorize]
+    [BindProperties]
     public class ViewReviewModel : PageModel
     {
         // Assuming you have a User model that includes user-related information
