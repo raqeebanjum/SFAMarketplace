@@ -20,3 +20,22 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+
+.nav-link {
+    display: flex;
+    align-items: center; /* Center alignment vertically */
+    justify-content: center; /* Center alignment horizontally */
+    padding: 8px 12px; /* Adjust padding as needed */
+    height: 100%; /* Fill the height */
+    color: black; /* Ensure the text color is visible */
+}
+
+.bi-cart2 {
+    font-size: 24px; /* Large size for the icon */
+    color: black; /* Color for the icon */
+}
+
+.navbar-collapse {
+    align-items: center; /* This ensures that all nav items are centered */
+}

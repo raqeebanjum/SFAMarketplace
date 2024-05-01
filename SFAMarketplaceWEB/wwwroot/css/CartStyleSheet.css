@@ -1,0 +1,94 @@
+﻿body {
+    background-color: #282a36;
+    color: #f8f8f2;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.card {
+    background-color: #282a36; /* Dark grayish color, adjust as needed */
+    color: #f8f8f2;
+}
+
+
+
+/* CartStyleSheet.css */
+.item-card {
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: space-between; /* Space between image/details and remove button */
+    background-color: #f9f9f9; /* Light background for each card */
+    border: 1px solid #e1e1e1; /* Subtle border for separation */
+    padding: 10px; /* Padding inside each card */
+    margin-bottom: 10px; /* Space between cards */
+    border-radius: 8px; /* Rounded corners for the card */
+    width: 60%; /* Reduced width from 100% to 60% */
+    max-width: 600px; /* Maximum width can help in very wide viewports */
+    color: #000; /* Ensure all text is black */
+}
+
+    .item-card img {
+        width: 100px; /* Fixed width for all images */
+        height: 100px; /* Fixed height to keep all images the same size */
+        object-fit: cover; /* Ensure images cover the area without distortion */
+        border-radius: 8px; /* Rounded corners for the image */
+        margin-right: 30px; /* Increased space between image and text */
+    }
+
+.item-details {
+    flex-grow: 1; /* Allow details to fill remaining space */
+    font-size: 1.2rem; /* Larger font size for visibility */
+}
+
+.close-btn {
+    font-size: 1.5rem; /* Size of the close button */
+    cursor: pointer; /* Pointer cursor on hover */
+    color: #000; /* Make sure the close button is black */
+}
+
+.bi-trash {
+    color: #000; /* Explicitly set the trash icon to black */
+}
+
+    .bi-trash:hover {
+        color: #d9534f; /* Change color to red on hover */
+        transform: scale(1.1); /* Slightly enlarge the icon */
+        transition: color 0.3s, transform 0.3s; /* Smooth transition for hover effect */
+    }
+
+/* Total section styling to ensure text is black */
+.total-section {
+    padding: 20px;
+    background-color: #fff; /* White background to highlight this section */
+    border: 1px solid #ddd; /* Subtle border for definition */
+    border-radius: 5px; /* Slight rounding of corners */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+    margin-top: 20px; /* Space from the top of the column */
+    color: #000; /* Black text for readability */
+}
+
+/* Specific styles for the checkout button */
+button[type="submit"] {
+    padding: 1.5vh 8vw; /* Adjusted padding for a longer and slimmer look */
+    border-radius: 5px;
+    border: none;
+    color: #fff;
+    background-color: #6c5ce7;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    display: block;
+    margin: 4% auto 2%; /* Increased top margin to move button down from the total */
+    width: auto; /* Adjust width to be more responsive */
+    font-size: 1.2rem; /* Ensure text size is readable and proportionate */
+}
+
+    button[type="submit"]:hover {
+        background-color: #5a4dad; /* Darker shade on hover for visual feedback */
+    }
+
+
+
+    button[type="submit"]:hover {
+        background-color: #5a4dad; /* Darker purple on hover for better user feedback */
+    }

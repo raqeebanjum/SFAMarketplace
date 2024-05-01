@@ -36,7 +36,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public void OnPost()
         {
-            PopulateCategoryDDL(); 
+            PopulateCategoryDDL();
             PopulateItem(SelectedCategoryID);
         }
 
@@ -89,7 +89,7 @@ AND UserID != @CurrentUserID"; // Add a condition to exclude items posted by the
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName"; 
+                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
