@@ -10,9 +10,10 @@ using Microsoft.Data.SqlClient;
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
     [Authorize]
+    [BindProperties]
+
     public class AddReviewModel : PageModel
     {
-        [BindProperty]
         public ReviewSubmission NewReview { get; set; } = new ReviewSubmission();
 
         public string SellerName { get; set; }

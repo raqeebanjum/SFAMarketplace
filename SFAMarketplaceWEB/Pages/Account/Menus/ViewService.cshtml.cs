@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
@@ -7,6 +8,8 @@ using System.Data;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    [Authorize]
+    [BindProperties]
     public class ViewServiceModel : PageModel
     {
         public Service Service { get; set; }

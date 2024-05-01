@@ -54,6 +54,23 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+        public IActionResult OnPostDelete(int serviceId)
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "DELETE FROM Services WHERE ServiceId = @serviceId";
+
+                using (SqlCommand cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@serviceId", serviceId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return RedirectToPage("/Account/Menus/PostedServices");
+        }
 
         private void PopulateService(int id)
         {
