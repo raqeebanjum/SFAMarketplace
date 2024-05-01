@@ -6,11 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SFAMarketplaceWEB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SFAMarketplaceWEB.styles.css" asp-append-version="true" />
 
     @RenderSection("Styles", required: false)
 </head>
+
 
 
 <body>
@@ -25,26 +28,41 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/PostedItems">Posted Items</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/PostedItems">
+                                <div class="nav-item-content">Posted Items</div>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/AddItem">Add Item</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/AddItem">
+                                <div class="nav-item-content">Add Item</div>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/AddService">Add Service</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Menus/AddService">
+                                <div class="nav-item-content">Add Service</div>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Profile">Profile</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Profile">
+                                <div class="nav-item-content">Profile</div>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">Sign Out</a>
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Account/Logout">
+                                <div class="nav-item-content">Sign Out</div>
+                            </a>
+                        </li>
+                        <!-- Cart Button -->
+                        <li class="nav-item ms-auto">
+                            <a class="nav-link" asp-area="" asp-page="/Account/Menus/Cart">
+                                <div class="nav-item-content"><i class="bi bi-cart2"></i></div>
+                            </a>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-
 
     <div class="container">
         <main role="main" class="pb-3">
