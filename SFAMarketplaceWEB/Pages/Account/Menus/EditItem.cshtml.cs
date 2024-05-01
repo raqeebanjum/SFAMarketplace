@@ -64,6 +64,23 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+        public IActionResult OnPostDelete(int itemId)
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "DELETE FROM Item WHERE ItemId = @itemId";
+
+                using (SqlCommand cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@itemId", itemId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            return RedirectToPage("/Account/Menus/PostedItems");
+        }
 
 
 

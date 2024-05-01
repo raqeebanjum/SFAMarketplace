@@ -15,7 +15,28 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
-            ValidatePassword();
+            var hasNumber = new Regex(@"[0-9]+");
+            var hasUpperChar = new Regex(@"[A-Z]+");
+            var hasLowerChar = new Regex(@"[a-z]+");
+
+            if (NewUser.Password != null)
+            {
+                if (NewUser.Password.Length < 10)
+                {
+                    ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
+                    return Page();
+                }
+                if (!hasNumber.IsMatch(NewUser.Password))
+                {
+                    ModelState.AddModelError("RegisterError", "Password must include at least one number.");
+                    return Page();
+                }
+                if (!hasUpperChar.IsMatch(NewUser.Password) || !hasLowerChar.IsMatch(NewUser.Password))
+                {
+                    ModelState.AddModelError("RegisterError", "Password must include both upper and lower case letters.");
+                    return Page();
+                }
+            }
 
             if (ModelState.IsValid)
             {
@@ -41,21 +62,6 @@ namespace SFAMarketplaceWEB.Pages.Account
             {
                 return Page();
             }
-        }
-
-        private ActionResult ValidatePassword()
-        {
-            var pattern = @"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}$";
-
-            if (NewUser.Password != null && !Regex.IsMatch(NewUser.Password, pattern))
-            {
-                ModelState.AddModelError("RegisterError", "Password must be at least 10 characters long, contain at least one number and have mixed upper-case letters and lower-case letters");
-                return Page();
-            }
-            else {
-                return Page(); 
-            }
-            
         }
 
         private void RegisterUser()
@@ -115,10 +121,6 @@ namespace SFAMarketplaceWEB.Pages.Account
                 }
             }
         }
-
-
-
-
-
     }
 }
+
