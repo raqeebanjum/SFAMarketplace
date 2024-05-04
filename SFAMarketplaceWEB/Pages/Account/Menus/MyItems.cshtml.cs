@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
+using System.Data;
 using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
@@ -39,6 +40,12 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                             {
                                 ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),
                                 ItemName = reader.GetString(reader.GetOrdinal("ItemName")),
+                                ItemPrice = reader.GetDecimal("ItemPrice"),
+                                ItemDescription = reader.GetString("ItemDescription"),
+                                ItemPhotoURL1 = reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL1")) ? null : reader.GetString(reader.GetOrdinal("ItemPhotoURL1")),
+                                CategoryID = reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("CategoryID")),
+                                ItemTradeStatus = reader.GetBoolean("ItemTradeStatus"),
+                                DatePosted = reader.GetDateTime("DatePosted")
                                 // Map other properties as needed
                             });
                         }
