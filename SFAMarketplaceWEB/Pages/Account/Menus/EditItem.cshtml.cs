@@ -57,7 +57,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                         cmd.ExecuteNonQuery();
                     }
                 }
-                return RedirectToPage("/Account/Menus/PostedItems");
+                return RedirectToPage("/Account/Menus/MyItems");
             }
             else
             {
