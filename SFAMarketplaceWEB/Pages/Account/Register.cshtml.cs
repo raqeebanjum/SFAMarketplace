@@ -15,33 +15,8 @@ namespace SFAMarketplaceWEB.Pages.Account
 
         public ActionResult OnPost()
         {
-            if (!IsValidEmailDomain(NewUser.Email))
-            {
-                ModelState.AddModelError("RegisterError", "Email must be a SFASU email.");
-                return Page();
-            }
-            var hasNumber = new Regex(@"[0-9]+");
-            var hasUpperChar = new Regex(@"[A-Z]+");
-            var hasLowerChar = new Regex(@"[a-z]+");
-
-            if (NewUser.Password != null)
-            {
-                if (NewUser.Password.Length < 10)
-                {
-                    ModelState.AddModelError("RegisterError", "Password must be at least 10 characters");
-                    return Page();
-                }
-                if (!hasNumber.IsMatch(NewUser.Password))
-                {
-                    ModelState.AddModelError("RegisterError", "Password must include at least one number.");
-                    return Page();
-                }
-                if (!hasUpperChar.IsMatch(NewUser.Password) || !hasLowerChar.IsMatch(NewUser.Password))
-                {
-                    ModelState.AddModelError("RegisterError", "Password must include both upper and lower case letters.");
-                    return Page();
-                }
-            }
+           
+            
 
             if (ModelState.IsValid)
             {
@@ -68,10 +43,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 return Page();
             }
         }
-        private bool IsValidEmailDomain(string email)
-        {
-            return email.EndsWith("@jacks.sfasu.edu") || email.EndsWith("@sfasu.edu");
-        }
+        
         private void RegisterUser()
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
