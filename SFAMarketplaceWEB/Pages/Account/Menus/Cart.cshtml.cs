@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
@@ -12,11 +13,13 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     public class CartPageModel : PageModel
     {
         public Cart UserCart { get; set; } = new Cart();
+        public List<SelectListItem> PickupLocations { get; set; } = new List<SelectListItem>();
 
         public void OnGet()
         {
             string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             PopulateCart(currentUserID);
+            PopulatePickupLocations();
         }
 
         private void PopulateCart(string userId)
@@ -56,6 +59,26 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
+        private void PopulatePickupLocations()
+        {
+            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT LocationID, LocationName FROM TransactionLocation", conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        PickupLocations.Add(new SelectListItem
+                        {
+                            Value = reader["LocationID"].ToString(),
+                            Text = reader["LocationName"].ToString()
+                        });
+                    }
+                }
+            }
+        }
+
         public IActionResult OnPostDeleteItem(int cartItemId)
         {
             if (cartItemId <= 0)
@@ -78,7 +101,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
 
                 TempData["SuccessMessage"] = "Item removed from cart successfully.";
-                return RedirectToPage(); // Refresh the page to update the cart view
+                return RedirectToPage(); 
             }
             catch (Exception ex)
             {
@@ -86,6 +109,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+
+
 
         public IActionResult OnPostCheckout()
         {
@@ -117,6 +142,5 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
-
     }
 }

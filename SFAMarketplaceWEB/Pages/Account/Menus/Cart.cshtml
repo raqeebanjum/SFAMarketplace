@@ -27,7 +27,7 @@
                             <h5>@cartItem.Item.ItemName</h5>
                             <p>$@cartItem.Item.ItemPrice.ToString("N2")</p>
                         </div>
-                        <!-- Delete functionality using form without altering style -->
+                        <select asp-for="@cartItem.LocationID" asp-items="@Model.PickupLocations" class="form-control"></select>
                         <form method="post" asp-page-handler="DeleteItem" class="close-btn">
                             <input type="hidden" name="cartItemId" value="@cartItem.CartItemID">
                             <button type="submit" style="background:none; border:none; padding:0;">
@@ -35,6 +35,8 @@
                             </button>
                         </form>
                     </div>
+                
+
                 }
             </div>
             <div class="col-md-4">

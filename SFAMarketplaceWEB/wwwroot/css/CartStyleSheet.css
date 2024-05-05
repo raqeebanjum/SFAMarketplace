@@ -92,3 +92,31 @@ button[type="submit"] {
     button[type="submit"]:hover {
         background-color: #5a4dad; /* Darker purple on hover for better user feedback */
     }
+
+
+
+/* Dropdown Menu Styling */
+.form-control {
+    color: #000; /* Text color for the options */
+    background-color: #fff; /* Background color of the dropdown */
+    border: 1px solid #ccc; /* Border color to match other inputs */
+    border-radius: 4px; /* Rounded corners to match other form elements */
+    padding: 0.5rem 0.75rem; /* Padding inside the dropdown */
+    margin-top: 10px; /* Top margin for spacing from the item details */
+    margin-right: 15px; /* Right margin to separate from the delete button */
+    font-size: 1rem; /* Font size to match your item-details */
+    width: 150px; /* Specific width to make the dropdown narrower */
+    display: inline-block; /* To keep inline with the delete button */
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+    .form-control:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Focus shadow to highlight active element */
+    }
+
+    /* Enhance appearance when options are expanded */
+    .form-control:not([size]):not([multiple]) {
+        height: calc(2.25rem + 2px); /* Specified height to maintain consistency */
+    }

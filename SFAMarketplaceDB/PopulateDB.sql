@@ -43,6 +43,24 @@ GO
 SET IDENTITY_INSERT [dbo].[Item] OFF
 GO
 
+
+SET IDENTITY_INSERT [dbo].[TransactionLocation] ON
+GO
+INSERT [dbo].[TransactionLocation] ([LocationID], [LocationName]) VALUES (1, N'Student Center')
+GO
+INSERT [dbo].[TransactionLocation] ([LocationID], [LocationName]) VALUES (2, N'Steen')
+GO
+INSERT [dbo].[TransactionLocation] ([LocationID], [LocationName]) VALUES (3, N'Lodge')
+GO
+INSERT [dbo].[TransactionLocation] ([LocationID], [LocationName]) VALUES (4, N'Rec Center')
+GO
+INSERT [dbo].[TransactionLocation] ([LocationID], [LocationName]) VALUES (5, N'Stem Building')
+GO
+
+SET IDENTITY_INSERT [dbo].[TransactionLocation] OFF
+GO
+
+
 -- Altering ItemsInCart to include ON DELETE CASCADE
 
 ALTER TABLE [dbo].[ItemsInCart] DROP CONSTRAINT IF EXISTS FK__ItemsInCa__ItemID;

@@ -24,6 +24,10 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public IActionResult OnPost()
         {
+            if (NewItem.ItemPrice < 0)
+            {
+                ModelState.AddModelError("NewItem.ItemPrice", "Price cannot be negative.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -32,12 +36,11 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
             else
             {
+                PopulateCategoryDDL();
                 return Page();
             }
-
-
-           
         }
+
 
         private void PopulateCategoryDDL()
         {
