@@ -6,6 +6,7 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
 }
+<h2 class="text-center">My Items</h2>
 @if (Model.myItems.Any())
 {
     <div class="container mt-3">
@@ -17,9 +18,8 @@
                         <!-- Making the image a clickable link -->
                         @if (!string.IsNullOrEmpty(item.ItemPhotoURL1))
                         {
-                            <a asp-page="ViewItem" asp-route-itemId="@item.ItemID">
                                 <img src="@item.ItemPhotoURL1" alt="Item Image" class="card-img-top" />
-                            </a>
+                            
                         }
                         else
                         {
@@ -43,6 +43,6 @@
 }
 else
 {
-      <p>No posted items.</p>
+      <p class="text-center">No posted items.</p>
 
 }
