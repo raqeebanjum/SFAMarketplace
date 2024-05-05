@@ -1,0 +1,18 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.CheckoutModel
+
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/CheckoutStyleSheet.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+}
+
+<div class="checkout-container">
+    <h1>Thank You for Your Order!</h1>
+    <div>
+        <a class="btn btn-primary" asp-page="/Account/Menus/PostedItems">Continue Shopping</a>
+</div>
+    

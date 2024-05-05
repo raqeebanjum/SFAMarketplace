@@ -42,3 +42,20 @@ SET IDENTITY_INSERT [dbo].[Item] ON
 GO
 SET IDENTITY_INSERT [dbo].[Item] OFF
 GO
+
+-- Altering ItemsInCart to include ON DELETE CASCADE
+
+ALTER TABLE [dbo].[ItemsInCart] DROP CONSTRAINT IF EXISTS FK__ItemsInCa__ItemID;
+ALTER TABLE [dbo].[ItemsInCart]
+ADD CONSTRAINT FK_ItemsInCart_ItemID
+FOREIGN KEY (ItemID) REFERENCES [dbo].[Item] (ItemID)
+ON DELETE CASCADE;
+GO
+
+-- Altering Wishlist to include ON DELETE CASCADE
+ALTER TABLE [dbo].[Wishlist] DROP CONSTRAINT IF EXISTS FK__Wishlist__ItemID;
+ALTER TABLE [dbo].[Wishlist]
+ADD CONSTRAINT FK_Wishlist_ItemID
+FOREIGN KEY (ItemID) REFERENCES [dbo].[Item] (ItemID)
+ON DELETE CASCADE;
+GO

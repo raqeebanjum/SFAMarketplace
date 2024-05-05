@@ -7,7 +7,7 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/CartStyleSheet.css" />
-    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"; />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
 }
 
 <h2>Your Cart</h2>
@@ -27,16 +27,22 @@
                             <h5>@cartItem.Item.ItemName</h5>
                             <p>$@cartItem.Item.ItemPrice.ToString("N2")</p>
                         </div>
-                        <div class="close-btn" aria-label="Remove item">
-                            <i class="bi bi-trash"></i>
-                        </div>
+                        <!-- Delete functionality using form without altering style -->
+                        <form method="post" asp-page-handler="DeleteItem" class="close-btn">
+                            <input type="hidden" name="cartItemId" value="@cartItem.CartItemID">
+                            <button type="submit" style="background:none; border:none; padding:0;">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
                     </div>
                 }
             </div>
             <div class="col-md-4">
                 <div class="total-section">
                     <h4>Total: $@Model.UserCart.Item.Sum(item => item.Item.ItemPrice).ToString("N2")</h4>
-                    <button type="submit" class="btn btn-primary">Checkout</button>
+                    <form method="post" asp-page-handler="Checkout">
+                        <button type="submit" class="btn btn-primary">Checkout</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -45,4 +51,16 @@
 else
 {
     <p>Your cart is empty.</p>
+}
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.close-btn button').forEach(button => {
+            button.addEventListener('click', function (event) {
+                if (!confirm('Are you sure you want to remove this item from your cart?')) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
 }

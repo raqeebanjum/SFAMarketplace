@@ -1,0 +1,34 @@
+﻿/* General background and text styling */
+body {
+    background-color: #282a36; /* Dark grayish color, consistent with other pages */
+    color: #f8f8f2; /* Light text for contrast */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Checkout page container */
+.checkout-container {
+    max-width: 600px;
+    margin: 40px auto; /* Centering the container */
+    padding: 20px;
+    text-align: center; /* Center align the text */
+}
+
+    .checkout-container h1 {
+        margin-bottom: 20px; /* Space below the heading */
+        color: #f8f8f2; /* Neutral light text color for consistency */
+    }
+
+.btn-primary {
+    background-color: #6c5ce7; /* Primary button color */
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #fff;
+    border-radius: 5px; /* Rounded button edges */
+    text-decoration: none; /* Removing underline from link */
+    display: inline-block;
+}
+
+    .btn-primary:hover {
+        background-color: #5a4dad; /* Darker shade on hover */
+    }

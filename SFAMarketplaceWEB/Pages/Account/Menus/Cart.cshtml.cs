@@ -9,9 +9,9 @@ using System.Collections.Generic;
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
     [Authorize]
-    public class CartPageModel : PageModel 
+    public class CartPageModel : PageModel
     {
-        public Cart UserCart { get; set; } = new Cart(); 
+        public Cart UserCart { get; set; } = new Cart();
 
         public void OnGet()
         {
@@ -55,5 +55,68 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
+
+        public IActionResult OnPostDeleteItem(int cartItemId)
+        {
+            if (cartItemId <= 0)
+            {
+                return Page();
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    string cmdText = "DELETE FROM ItemsInCart WHERE CartItemID = @CartItemID";
+
+                    using (SqlCommand cmd = new SqlCommand(cmdText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CartItemID", cartItemId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                TempData["SuccessMessage"] = "Item removed from cart successfully.";
+                return RedirectToPage(); // Refresh the page to update the cart view
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error removing item from cart: " + ex.Message);
+                return Page();
+            }
+        }
+
+        public IActionResult OnPostCheckout()
+        {
+            string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(currentUserID))
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    string cmdText = "DELETE FROM ItemsInCart WHERE CartID IN (SELECT CartID FROM Cart WHERE UserID = @UserID)";
+
+                    using (SqlCommand cmd = new SqlCommand(cmdText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserID", currentUserID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return RedirectToPage("/Account/Menus/Checkout");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error during checkout: " + ex.Message);
+                return Page();
+            }
+        }
+
     }
 }
