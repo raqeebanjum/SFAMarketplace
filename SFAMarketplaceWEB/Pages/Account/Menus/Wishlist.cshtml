@@ -6,6 +6,8 @@
 
 @section Styles {
     <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
 }
 
 <h2 class="text-center">My Wishlist</h2>
@@ -36,7 +38,7 @@
                                     <button type="submit" class="btn btn-primary">Add to Cart</button>
                                 </form>
                                 <form method="post" asp-page-handler="RemoveFromWishlist" asp-route-itemId="@item.ItemID" class="d-inline">
-                                    <button type="submit" class="btn btn-danger">Remove</button>
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i>Remove</button>
                                 </form>
                             </div>
                         </div>

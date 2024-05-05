@@ -65,27 +65,51 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
-        
 
-        
-         public IActionResult OnPostRemoveFromWishlist(int itemId)
+
+
+        public IActionResult OnPostRemoveFromWishlist(int itemId)
         {
-            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
-                string cmdText = "DELETE FROM Wishlist WHERE UserId = @UserId AND ItemId = @ItemId";
-                SqlCommand cmd = new SqlCommand(cmdText, conn);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@ItemId", itemId);
-                conn.Open();
-                cmd.ExecuteNonQuery();
+                ModelState.AddModelError("", "User is not authenticated.");
+                return Page();
             }
-            return RedirectToPage("/Account/Menus/Cart");
+
+            try
+            {
+                using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    string cmdText = "DELETE FROM Wishlist WHERE UserId = @UserId AND ItemId = @ItemId";
+                    using (var cmd = new SqlCommand(cmdText, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", userId);
+                        cmd.Parameters.AddWithValue("@ItemId", itemId);
+                        int result = cmd.ExecuteNonQuery();
+                        if (result > 0)
+                        {
+                            TempData["SuccessMessage"] = "Item successfully removed from wishlist.";
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "No item found or already removed.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "Error removing item from wishlist: " + ex.Message);
+            }
+            return RedirectToPage(); // Stays on the same page, updating the view to reflect changes
         }
 
-         
-         
-         public IActionResult OnPostMoveToCart(int itemId)
+
+
+
+        public IActionResult OnPostMoveToCart(int itemId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
