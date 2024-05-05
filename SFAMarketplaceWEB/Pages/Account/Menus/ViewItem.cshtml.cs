@@ -5,6 +5,7 @@ using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
 using System.Data;
+using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
@@ -67,8 +68,54 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public IActionResult OnPostAddToCart(int itemId)
         {
-            string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            string currentUserID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(currentUserID))
+            {
+                return RedirectToPage("/Account/Login");
+            }
+
+            try
+            {
+                using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                {
+                    conn.Open();
+                    int cartId = EnsureUserHasCart(conn, currentUserID);
+
+                    // Insert item into cart
+                    string addToCartCmd = @"
+            INSERT INTO ItemsInCart (CartID, ItemID)
+            VALUES (@CartID, @ItemId)";
+                    using (var cmd = new SqlCommand(addToCartCmd, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@CartID", cartId);
+                        cmd.Parameters.AddWithValue("@ItemId", itemId);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    // Remove item from Wishlist
+                    string removeFromWishlistCmd = @"
+            DELETE FROM Wishlist
+            WHERE UserId = @UserId AND ItemId = @ItemId";
+                    using (var cmd = new SqlCommand(removeFromWishlistCmd, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@UserId", currentUserID);
+                        cmd.Parameters.AddWithValue("@ItemId", itemId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                return RedirectToPage("/Account/Menus/Cart");
+            }
+            catch (SqlException ex)
+            {
+                // Log the error
+                return Page();
+            }
+        }
+        public IActionResult OnPostAddToWishlist(int itemId)
+        {
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
             {
                 // Handle case where user ID isn't found, possibly redirect to login
                 return RedirectToPage("/Account/Login");
@@ -80,17 +127,14 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 {
                     conn.Open();
 
-                    // Ensure the user has a cart
-                    int cartId = EnsureUserHasCart(conn, currentUserID);
-
-                    // Insert item into cart
+                    // Insert item into Wishlist
                     string cmdText = @"
-                INSERT INTO ItemsInCart (CartID, ItemID)
-                VALUES (@CartID, @ItemId)";
+            INSERT INTO Wishlist (UserId, ItemId)
+            VALUES (@UserId, @ItemId)";
 
                     using (var cmd = new SqlCommand(cmdText, conn))
                     {
-                        cmd.Parameters.AddWithValue("@CartID", cartId);
+                        cmd.Parameters.AddWithValue("@UserId", userId);
                         cmd.Parameters.AddWithValue("@ItemId", itemId);
                         int result = cmd.ExecuteNonQuery();
                         if (result == 0)
@@ -101,7 +145,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     }
                 }
 
-                return RedirectToPage("/Account/Menus/Cart");
+                return RedirectToPage("/Account/Menus/Wishlist"); // Redirect back to the same page or to the wishlist page
             }
             catch (SqlException ex)
             {
@@ -109,6 +153,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page(); // Optionally return an error message to display
             }
         }
+
+
 
         private int EnsureUserHasCart(SqlConnection conn, string userId)
         {

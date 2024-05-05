@@ -51,9 +51,12 @@
                 <p><strong>Trade Status:</strong> @(Model.Item.ItemTradeStatus ? "Accepting Trades" : "Not Accepting Trades")</p>
             </div>
 
-            <div class="text-center">
-                <form method="post" asp-page-handler="AddToCart" asp-route-itemId="@Model.Item.ItemID">
+            <div class="button-group text-center">
+                <form method="post" asp-page-handler="AddToCart" asp-route-itemId="@Model.Item.ItemID" class="d-inline">
                     <button type="submit" class="btn btn-primary">Add to Cart</button>
+                </form>
+                <form method="post" asp-page-handler="AddToWishlist" asp-route-itemId="@Model.Item.ItemID" class="d-inline">
+                    <button type="submit" class="btn btn-primary">Add to Wishlist</button>
                 </form>
             </div>
         }
