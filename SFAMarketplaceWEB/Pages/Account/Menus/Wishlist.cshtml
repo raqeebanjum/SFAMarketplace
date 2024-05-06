@@ -1,0 +1,54 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.WishlistModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+
+}
+
+<h2 class="text-center">My Wishlist</h2>
+<div class="container mt-3">
+    @if (Model.WishlistItems.Any())
+    {
+        <div class="row">
+            @foreach (var item in Model.WishlistItems)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <!-- Optionally making the image a clickable link to view item details -->
+                        @if (!string.IsNullOrEmpty(item.ItemPhotoURL1))
+                        {
+                           <img src="@item.ItemPhotoURL1" alt="Item Image" class="card-img-top" />
+                        }
+                        else
+                        {
+                            <div class="image-placeholder">
+                                No Image Available
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ItemName</h5>
+                            <p class="card-text">Price: @item.ItemPrice.ToString("C2")</p>
+                            <div class="button-group">
+                                <form method="post" asp-page-handler="MoveToCart" asp-route-itemId="@item.ItemID" class="d-inline">
+                                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                                </form>
+                                <form method="post" asp-page-handler="RemoveFromWishlist" asp-route-itemId="@item.ItemID" class="d-inline">
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i>Remove</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <p class="text-center">Your wishlist is empty.</p>
+    }
+</div>

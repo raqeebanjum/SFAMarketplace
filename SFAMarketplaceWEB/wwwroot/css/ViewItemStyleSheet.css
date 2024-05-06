@@ -34,3 +34,8 @@
 .item-info p {
     margin-bottom: 10px; /* Spacing between paragraphs */
 }
+
+.button-group form {
+    display: inline-block; /* Makes the form elements line up side by side */
+    margin-right: 10px; /* Optional: adds some space between the buttons */
+}
