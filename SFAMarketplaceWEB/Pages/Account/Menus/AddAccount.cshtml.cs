@@ -23,7 +23,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
-                    RegisterUser();
+                    AddUser();
                     return RedirectToPage("ManageAccounts");
                 }
                 else
@@ -47,7 +47,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
 
 
-        private void RegisterUser()
+        private void AddUser()
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
