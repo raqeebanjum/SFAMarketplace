@@ -1,0 +1,38 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.AddAccountModel
+@{
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+}
+@section Styles {
+    <link rel="stylesheet" href="~/css/RegisterStyleSheet.css" />
+}
+
+<div class="form-container">
+    <form method="post">
+        <h2>Add User</h2>
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+
+        <div class="form-group">
+            <input asp-for="NewUser.Username" class="form-control" placeholder="Username" />
+        </div>
+
+        <div class="form-group">
+            <input asp-for="NewUser.FirstName" class="form-control" placeholder="First Name" />
+        </div>
+
+        <div class="form-group">
+            <input asp-for="NewUser.LastName" class="form-control" placeholder="Last Name" />
+        </div>
+
+        <div class="form-group">
+            <input asp-for="NewUser.Email" class="form-control" placeholder="Email" />
+        </div>
+
+        <div class="form-group">
+            <input asp-for="NewUser.Password" class="form-control" placeholder="Password" type="password" />
+        </div>
+
+        <button type="submit" class="btn btn-primary"><i class="bi bi-clipboard2-check"></i> Add User</button>
+    </form>
+</div>

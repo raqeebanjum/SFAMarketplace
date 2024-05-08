@@ -1,22 +1,22 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
-using System;
-using System.Text.RegularExpressions;
 
-namespace SFAMarketplaceWEB.Pages.Account
+namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
-    public class RegisterModel : PageModel
+    [Authorize]
+    public class AddAccountModel : PageModel
     {
         [BindProperty]
         public User NewUser { get; set; }
 
         public ActionResult OnPost()
         {
-           
-            
+
+
 
             if (ModelState.IsValid)
             {
@@ -24,7 +24,7 @@ namespace SFAMarketplaceWEB.Pages.Account
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
                     RegisterUser();
-                    return RedirectToPage("Login");
+                    return RedirectToPage("ManageAccounts");
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace SFAMarketplaceWEB.Pages.Account
             }
         }
 
-      
+
 
         private void RegisterUser()
         {
@@ -108,4 +108,3 @@ namespace SFAMarketplaceWEB.Pages.Account
 
     }
 }
-
