@@ -5,7 +5,9 @@ namespace SFAMarketplaceWEB.Models
 {
     public class User
     {
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
+
+        public int Role {  get; set; }
 
         [Required(ErrorMessage = "Username is required.")]
         public string Username { get; set; }
@@ -18,7 +20,7 @@ namespace SFAMarketplaceWEB.Models
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress]
-        [RegularExpression(@"^[A-Za-z0-9._%+-]+@(jacks\.)?sfasu\.edu$", ErrorMessage = "Email must be a SFASU email.")]
+        [RegularExpression(@"^[A-Za-z0-9._%+-]+@(jacks\.)?sfasu\.edu|[A-Za-z0-9._%+-]+@admin\.com$", ErrorMessage = "Email must be a SFASU email.")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Password is required.")]

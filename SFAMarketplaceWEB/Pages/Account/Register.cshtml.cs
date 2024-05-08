@@ -20,6 +20,8 @@ namespace SFAMarketplaceWEB.Pages.Account
 
             if (ModelState.IsValid)
             {
+                AdminUser();
+
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
                     RegisterUser();
@@ -43,7 +45,9 @@ namespace SFAMarketplaceWEB.Pages.Account
                 return Page();
             }
         }
-        
+
+      
+
         private void RegisterUser()
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -61,7 +65,8 @@ namespace SFAMarketplaceWEB.Pages.Account
                     cmd.Parameters.AddWithValue("@Username", NewUser.Username);
                     cmd.Parameters.AddWithValue("@Email", NewUser.Email);
                     cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(NewUser.Password));
-                    cmd.Parameters.AddWithValue("@Role", 1);
+                    int roleId = NewUser.Email.EndsWith("@admin.com") ? 1 : 2;
+                    cmd.Parameters.AddWithValue("@Role", roleId);
                     cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
                     cmd.ExecuteNonQuery();
                 }
@@ -100,6 +105,11 @@ namespace SFAMarketplaceWEB.Pages.Account
                     }
                 }
             }
+        }
+
+        private void AdminUser()
+        {
+            
         }
     }
 }

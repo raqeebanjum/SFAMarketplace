@@ -1,0 +1,28 @@
+﻿@page
+@model SFAMarketplaceWEB.Pages.Account.Menus.ManageAccountsModel
+@{
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>UserId</th>
+            <th>Username</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model.users)
+        {
+            <tr>
+                <td>@user.UserId</td>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>
+                    <!-- Edit the current forecast -->
+                    <a asp-page="EditAccount" asp-route-id="@user.UserId" class="btn btn-primary"><i class="bi bi-pencil-square"></i> Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
