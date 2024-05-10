@@ -1,5 +1,6 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
+    height: 100%; /* Make sure html element fills the height of the viewport */
 }
 
 @media (min-width: 768px) {
@@ -17,10 +18,13 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
 
+body {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    min-height: 100%; /* Minimum height is full viewport */
+    margin: 0; /* Remove default margin */
+}
 
 .nav-link {
     display: flex;
@@ -38,4 +42,11 @@ body {
 
 .navbar-collapse {
     align-items: center; /* This ensures that all nav items are centered */
+}
+.main-content {
+    flex: 1; /* Allows main content to expand and fill available space, pushing the footer down */
+}
+
+.footer {
+    flex-shrink: 0; /* Prevent footer from shrinking */
 }
