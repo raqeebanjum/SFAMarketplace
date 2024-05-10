@@ -8,7 +8,7 @@ using System;
 
 namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 {
-    [Authorize]
+    [Authorize(Policy = "Admin")]
     public class AdminEditUserProfileModel : PageModel
     {
         [BindProperty]

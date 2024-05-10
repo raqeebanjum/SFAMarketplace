@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,21 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.Cookie.Name = "SFAMarketPlaceCookie";
         options.LoginPath = "/Account/Login";
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Admin", policy =>
+    {
+        policy.RequireAuthenticatedUser(); // Require the user to be authenticated
+        policy.RequireAssertion(context =>
+        {
+            var claimsPrincipal = context.User as ClaimsPrincipal;
+            var email = claimsPrincipal.FindFirst(ClaimTypes.Email)?.Value;
+            return email == "johnny@sfa.com";
+             
+        });
+    });
+});
 
 var app = builder.Build();
 

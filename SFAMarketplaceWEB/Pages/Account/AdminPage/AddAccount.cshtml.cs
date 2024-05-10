@@ -7,7 +7,7 @@ using SFAMarketplaceWEB.Models;
 
 namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 {
-    [Authorize]
+    [Authorize (Policy = "Admin")]
     public class AddAccountModel : PageModel
     {
         [BindProperty]

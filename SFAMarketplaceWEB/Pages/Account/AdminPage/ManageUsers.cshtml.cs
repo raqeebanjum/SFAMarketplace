@@ -8,7 +8,7 @@ using SFAMarketplaceWEB.Models;
 
 namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 {
-    [Authorize]
+    [Authorize (Policy="Admin")]
     [BindProperties]
     public class ManageAccountsModel : PageModel
     {
@@ -53,7 +53,10 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                         Password = reader.GetString(reader.GetOrdinal("PasswordHash")),
                     };
 
-                    users.Add(user);  // Add every user to the list
+                    if (user.Username != "Johnny")
+                    {
+                        users.Add(user);  // Add every user to the list
+                    }
                 }
             }
         }
