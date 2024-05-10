@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption.ConfigurationModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
+using SFAMarketplaceWEB.Models;
 using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account
@@ -23,18 +23,34 @@ namespace SFAMarketplaceWEB.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                if (ValidateCredentials() && LoginUser.Username == "johnny") 
+                var user = ValidateCredentials();
+                if (user != null)
                 {
-                    return RedirectToPage("/Account/AdminPage/ManageUsers");
-                }
-                else if (ValidateCredentials() )
-                {
-                    return RedirectToPage("/Account/Menus/PostedItems");
+                    var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Name, user.FirstName),
+                new Claim(ClaimTypes.Role, user.Role == 0 ? "Admin" : "User")
+            };
+
+                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                    var principal = new ClaimsPrincipal(identity);
+
+                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    if (user.Role == 0)
+                    {
+                        return RedirectToPage("/Account/AdminPage/ManageUsers");
+                    }
+                    else
+                    {
+                        return RedirectToPage("/Account/Menus/PostedItems");
+                    }
                 }
                 else
                 {
-                    ModelState.AddModelError("LoginError", "Invalid credentials.Try Again.");
-
+                    ModelState.AddModelError("LoginError", "Invalid credentials. Try again.");
                     return Page();
                 }
             }
@@ -45,63 +61,39 @@ namespace SFAMarketplaceWEB.Pages.Account
         }
 
 
-     private bool ValidateCredentials()
-{
-    using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
-    {
-        string cmdText = "SELECT PasswordHash, UserID, FirstName, Email, LastLoginTime FROM Users WHERE Username=@username";
-        SqlCommand cmd = new SqlCommand(cmdText, conn);
-        cmd.Parameters.AddWithValue("@username", LoginUser.Username);
-        conn.Open();
-        SqlDataReader reader = cmd.ExecuteReader();
-        if (reader.HasRows)
+        private User ValidateCredentials()
         {
-            reader.Read();
-            if (reader.IsDBNull(0))
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                return false;
-            }
-            else
-            {
-                string passwordHash = reader.GetString(0);
-                if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
+                string cmdText = "SELECT UserID, FirstName, Email, PasswordHash, Role FROM Users WHERE Username = @username";
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                cmd.Parameters.AddWithValue("@username", LoginUser.Username);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
                 {
-                    int userID = reader.GetInt32(1);
-                    UpdateLastLoginTime(userID);
-
-                    string name = reader.GetString(2);
-                    string email = reader.GetString(3);
-                    
-                    List<Claim> claims = new List<Claim>
+                    reader.Read();
+                    string passwordHash = reader.GetString(3);
+                    if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
                     {
-                        new Claim(ClaimTypes.NameIdentifier, userID.ToString()),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.Name, name)
-                    };
-                    
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    return true;
-                }
-                else
-                {
-                    return false;
+                        return new User
+                        {
+                            UserId = reader.GetInt32(0),
+                            FirstName = reader.GetString(1),
+                            Email = reader.GetString(2),
+                            Role = reader.GetInt32(4)
+                        };
+                    }
                 }
             }
+            return null;
         }
-        return false;
-    }
-}
-
 
         private void UpdateLastLoginTime(int userID)
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "UPDATE Users SET LastLoginTime=@lastLoginTime WHERE UserID=@userID";
+                string cmdText = "UPDATE Users SET LastLoginTime = @lastLoginTime WHERE UserID = @userID";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@lastLoginTime", DateTime.Now);
                 cmd.Parameters.AddWithValue("@userID", userID);
@@ -109,7 +101,5 @@ namespace SFAMarketplaceWEB.Pages.Account
                 cmd.ExecuteNonQuery();
             }
         }
-
-
     }
 }

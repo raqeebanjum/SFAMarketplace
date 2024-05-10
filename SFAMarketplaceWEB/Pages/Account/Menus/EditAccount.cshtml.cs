@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
+using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
@@ -11,67 +12,82 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     [BindProperties]
     public class EditAccountModel : PageModel
     {
-        public EditUserModel User { get; set; } = new EditUserModel();
+        public EditUserModel UserEdit { get; set; } = new EditUserModel();
 
-        public void OnGet(int id)
+        public void OnGet()
         {
-            PopulateUser(id);
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                PopulateUser(int.Parse(userId));
+            }
         }
 
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!string.IsNullOrEmpty(userId))
                 {
-                    string cmdText = @"
-                        UPDATE Users
-                        SET FirstName = @FirstName,
-                            LastName = @LastName,
-                            Username = @Username,
-                            Email = @Email
-                        WHERE UserId = @UserId";
-
-                    using (SqlCommand cmd = new SqlCommand(cmdText, conn))
-                    {
-                        cmd.Parameters.AddWithValue("@FirstName", User.FirstName);
-                        cmd.Parameters.AddWithValue("@LastName", User.LastName);
-                        cmd.Parameters.AddWithValue("@Username", User.Username);
-                        cmd.Parameters.AddWithValue("@Email", User.Email);
-                        cmd.Parameters.AddWithValue("@UserId", User.UserId);
-
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    UpdateUserDetails(int.Parse(userId));
+                    return RedirectToPage("/Account/Profile");
                 }
-                return RedirectToPage("ManageAccounts");
             }
-            else
-            {
-                return Page();
-            }
+            return Page();
         }
 
-        private void PopulateUser(int id)
+        private void UpdateUserDetails(int userId)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email FROM Users WHERE UserId = @UserId";
+                string cmdText = @"
+            UPDATE Users
+            SET FirstName = @FirstName,
+                LastName = @LastName,
+                Username = @Username,
+                Email = @Email,
+                ProfilePictureURL = @ProfilePictureURL
+            WHERE UserId = @UserId";
+
+                using (SqlCommand cmd = new SqlCommand(cmdText, conn))
+                {
+                    cmd.Parameters.AddWithValue("@FirstName", UserEdit.FirstName);
+                    cmd.Parameters.AddWithValue("@LastName", UserEdit.LastName);
+                    cmd.Parameters.AddWithValue("@Username", UserEdit.Username);
+                    cmd.Parameters.AddWithValue("@Email", UserEdit.Email);
+                    cmd.Parameters.AddWithValue("@ProfilePictureURL", UserEdit.ProfilePictureURL ?? (object)DBNull.Value); // Handle null
+                    cmd.Parameters.AddWithValue("@UserId", userId);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        private void PopulateUser(int userId)
+        {
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            {
+                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email, ProfilePictureURL FROM Users WHERE UserId = @UserId";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
-                cmd.Parameters.AddWithValue("@UserId", id);
+                cmd.Parameters.AddWithValue("@UserId", userId);
                 conn.Open();
                 using (var reader = cmd.ExecuteReader())
                 {
                     if (reader.Read())
                     {
-                        User.UserId = reader.GetInt32(0);
-                        User.FirstName = reader.GetString(1);
-                        User.LastName = reader.GetString(2);
-                        User.Username = reader.GetString(3);
-                        User.Email = reader.GetString(4);
+                        UserEdit.UserId = reader.GetInt32(0);
+                        UserEdit.FirstName = reader.GetString(1);
+                        UserEdit.LastName = reader.GetString(2);
+                        UserEdit.Username = reader.GetString(3);
+                        UserEdit.Email = reader.GetString(4);
+                        UserEdit.ProfilePictureURL = reader.IsDBNull(5) ? null : reader.GetString(5);
                     }
                 }
             }
         }
+
     }
 }

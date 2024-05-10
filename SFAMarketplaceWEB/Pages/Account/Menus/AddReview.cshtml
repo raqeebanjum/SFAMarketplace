@@ -1,7 +1,10 @@
 ﻿@page
+@using System.Security.Claims
 @model SFAMarketplaceWEB.Pages.Account.Menus.AddReviewModel
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+    Layout = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?
+             "_LayoutAuthenticatedAdmin" :  // Admin-specific layout
+             "_LayoutAuthenticated";        // Regular user layout
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/AddReviewStyleSheet.css" />

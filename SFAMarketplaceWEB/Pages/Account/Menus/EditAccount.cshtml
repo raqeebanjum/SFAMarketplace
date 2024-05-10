@@ -1,7 +1,10 @@
 ﻿@page
+@using System.Security.Claims
 @model SFAMarketplaceWEB.Pages.Account.Menus.EditAccountModel
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+    Layout = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?
+             "_LayoutAuthenticatedAdmin" :  // Admin-specific layout
+             "_LayoutAuthenticated";        // Regular user layout
 }
 
 @section Styles {
@@ -29,26 +32,33 @@
     }
 
     <form method="post">
-        <input type="hidden" asp-for="User.UserId" />
+        <input type="hidden" asp-for="UserEdit.UserId" />
+
         <div class="form-group">
-            <label asp-for="User.FirstName">First Name</label>
-            <input asp-for="User.FirstName" class="form-control" />
-            <span asp-validation-for="User.FirstName" class="text-danger"></span>
+            <label asp-for="UserEdit.ProfilePictureURL">Profile Picture URL</label>
+            <input asp-for="UserEdit.ProfilePictureURL" class="form-control" />
+            <span asp-validation-for="UserEdit.ProfilePictureURL" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="UserEdit.FirstName">First Name</label>
+            <input asp-for="UserEdit.FirstName" class="form-control" />
+            <span asp-validation-for="UserEdit.FirstName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="User.LastName">Last Name</label>
-            <input asp-for="User.LastName" class="form-control" />
-            <span asp-validation-for="User.LastName" class="text-danger"></span>
+            <label asp-for="UserEdit.LastName">Last Name</label>
+            <input asp-for="UserEdit.LastName" class="form-control" />
+            <span asp-validation-for="UserEdit.LastName" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="User.Username">Username</label>
-            <input asp-for="User.Username" class="form-control" />
-            <span asp-validation-for="User.Username" class="text-danger"></span>
+            <label asp-for="UserEdit.Username">Username</label>
+            <input asp-for="UserEdit.Username" class="form-control" />
+            <span asp-validation-for="UserEdit.Username" class="text-danger"></span>
         </div>
         <div class="form-group">
-            <label asp-for="User.Email">Email</label>
-            <input asp-for="User.Email" class="form-control" />
-            <span asp-validation-for="User.Email" class="text-danger"></span>
+            <label asp-for="UserEdit.Email">Email</label>
+            <input asp-for="UserEdit.Email" class="form-control" />
+            <span asp-validation-for="UserEdit.Email" class="text-danger"></span>
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>

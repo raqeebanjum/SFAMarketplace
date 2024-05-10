@@ -24,9 +24,16 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public IActionResult OnPost()
         {
+            PopulateCategoryDDL();
+
             if (NewItem.ItemPrice < 0)
             {
                 ModelState.AddModelError("NewItem.ItemPrice", "Price cannot be negative.");
+            }
+
+            if (NewItem.CategoryID == null || NewItem.CategoryID == 0)
+            {
+                ModelState.AddModelError("NewItem.CategoryID", "Selecting a category is required.");
             }
 
             if (ModelState.IsValid)
@@ -36,10 +43,10 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
             else
             {
-                PopulateCategoryDDL();
                 return Page();
             }
         }
+
 
 
         private void PopulateCategoryDDL()

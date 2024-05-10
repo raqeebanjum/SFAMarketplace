@@ -23,7 +23,7 @@ namespace SFAMarketplaceWEB.Pages.Account
             string email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT FirstName, LastName, Username, LastLoginTime FROM Users WHERE Email=@Email";
+                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email, ProfilePictureURL, LastLoginTime FROM Users WHERE Email=@Email";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@Email", email);
                 conn.Open();
@@ -31,14 +31,16 @@ namespace SFAMarketplaceWEB.Pages.Account
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    profile.FirstName = reader.GetString(0);
-                    profile.LastName = reader.GetString(1); 
-                    profile.Username = reader.GetString(2);
-                    profile.Email = email;                   
-                    profile.LastLoginTime = reader.GetDateTime(3);
+                    profile.FirstName = reader.GetString(1);
+                    profile.LastName = reader.GetString(2);
+                    profile.Username = reader.GetString(3);
+                    profile.Email = email;
+                    profile.ProfilePictureURL = reader.IsDBNull(5) ? "https://via.placeholder.com/200" : reader.GetString(5);
+                    profile.LastLoginTime = reader.GetDateTime(6);
                 }
             }
         }
+
 
     }
 }

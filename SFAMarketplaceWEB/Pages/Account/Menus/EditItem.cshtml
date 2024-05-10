@@ -1,32 +1,18 @@
 @page
+@using System.Security.Claims
 @model SFAMarketplaceWEB.Pages.Account.Menus.EditItemModel
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
-}
-@section Styles {
-    <link rel="stylesheet" href="~/css/AddItemStyleSheet.css" />
+    Layout = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?
+             "_LayoutAuthenticatedAdmin" :  // Admin-specific layout
+             "_LayoutAuthenticated";        // Regular user layout
 }
 
+@section Styles {
+    <link rel="stylesheet" href="~/css/EditItemStyleSheet.css" />
+}
 
 <div class="item-form-container">
     <h2>Edit Item</h2>
-    <div asp-validation-summary="All" class="text-danger"></div>
-
-    @if (!ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <strong>Validation error(s):</strong>
-            <ul>
-                @foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
-                }
-            </ul>
-        </div>
-    }
 
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
@@ -56,8 +42,6 @@
             <span asp-validation-for="Item.ItemPhotoURL3" class="text-danger"></span>
         </div>
 
-
-
         <div class="form-group">
             <label asp-for="Item.ItemPrice"></label>
             <input asp-for="Item.ItemPrice" type="number" step="0.01" class="form-control" />
@@ -75,7 +59,6 @@
             </div>
         </div>
 
-
         <div class="form-group">
             <label asp-for="Item.ItemTradeStatus"></label>
             <input asp-for="Item.ItemTradeStatus" type="checkbox" />
@@ -83,12 +66,11 @@
         </div>
 
         <button type="submit" class="btn btn-primary">Update</button>
-
     </form>
-    <form method="post" asp-page-handler="Delete">
-        <input type="hidden" name="itemId" value="@Model.Item.ItemID" />
-        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"><i class="bi bi-trash"></i>Delete</button>
 
+    <form method="post" asp-page-handler="Delete" class="item-delete-form">
+        <input type="hidden" name="itemId" value="@Model.Item.ItemID" />
+        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"><i class="bi bi-trash"></i> Delete</button>
     </form>
 </div>
-
+</div>

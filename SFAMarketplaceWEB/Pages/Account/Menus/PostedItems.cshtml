@@ -1,13 +1,22 @@
 ﻿@page
+@using System.Security.Claims
 @model SFAMarketplaceWEB.Pages.Account.Menus.PostedItemsModel
+
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+    Layout = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?
+             "_LayoutAuthenticatedAdmin" :  // Admin-specific layout
+             "_LayoutAuthenticated";        // Regular user layout
 }
+
 @section Styles {
     <link rel="stylesheet" href="~/css/PostedItemsStyleSheet.css" />
 }
 
+
+
 <h2>Posted Items</h2>
+
+
 
 <form method="post">
     <div class="row m-2">
@@ -29,7 +38,6 @@
         {
             <div class="col-md-4 mb-4">
                 <div class="card">
-                    <!-- Making the image a clickable link -->
                     @if (!string.IsNullOrEmpty(item.ItemPhotoURL1))
                     {
                         <a asp-page="ViewItem" asp-route-itemId="@item.ItemID">
@@ -49,8 +57,5 @@
                 </div>
             </div>
         }
-
-
     </div>
 </div>
-

@@ -1,7 +1,10 @@
 ﻿@page
+@using System.Security.Claims
 @model SFAMarketplaceWEB.Pages.Account.Menus.AddItemModel
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+    Layout = User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?
+             "_LayoutAuthenticatedAdmin" :  // Admin-specific layout
+             "_LayoutAuthenticated";        // Regular user layout
 }
 
 @section Styles {
@@ -10,23 +13,6 @@
 
 <div class="item-form-container">
     <h2 class="form-title">Add New Item</h2>
-    <div asp-validation-summary="All" class="text-danger"></div>
-
-    @if (!ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <strong>Validation error(s):</strong>
-            <ul>
-                @foreach (var modelState in ViewData.ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
-                }
-            </ul>
-        </div>
-    }
 
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
@@ -67,7 +53,7 @@
                 <label asp-for="NewItem.CategoryID" class="form-label">Category:</label>
             </div>
             <div class="col-10">
-                <select asp-for="NewItem.CategoryID" asp-items="Model.Categories" class="form-control">
+                <select asp-for="NewItem.CategoryID" asp-items="Model.Categories" class="form-control" required>
                     <option value="">Select a Category...</option>
                 </select>
                 <span asp-validation-for="NewItem.CategoryID" class="text-danger"></span>
