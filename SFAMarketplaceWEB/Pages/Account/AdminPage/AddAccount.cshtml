@@ -1,7 +1,7 @@
 ﻿@page
-@model SFAMarketplaceWEB.Pages.Account.Menus.AddAccountModel
+@model SFAMarketplaceWEB.Pages.Account.AdminPage.AddAccountModel
 @{
-    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
+    Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticatedAdmin" : "_Layout";
 }
 @section Styles {
     <link rel="stylesheet" href="~/css/RegisterStyleSheet.css" />

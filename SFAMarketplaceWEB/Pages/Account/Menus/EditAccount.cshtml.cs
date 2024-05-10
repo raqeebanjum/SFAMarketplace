@@ -1,12 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
-using SFAMarketplaceWEB.Model;
 using SFAMarketplaceWEB.Models;
-using System.Data;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
@@ -14,28 +11,26 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     [BindProperties]
     public class EditAccountModel : PageModel
     {
-        public User User { get; set; } = new User();
-
+        public EditUserModel User { get; set; } = new EditUserModel();
 
         public void OnGet(int id)
         {
             PopulateUser(id);
         }
 
-        public IActionResult OnPost(int id)
+        public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
                 using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
                 {
                     string cmdText = @"
-                    UPDATE Users
-                    SET FirstName = @FirstName,
-                        LastName = @LastName,
-                        Username = @Username,
-                        Email = @Email,
-                        PasswordHash = @PasswordHash
-                    WHERE UserId = @userId";
+                        UPDATE Users
+                        SET FirstName = @FirstName,
+                            LastName = @LastName,
+                            Username = @Username,
+                            Email = @Email
+                        WHERE UserId = @UserId";
 
                     using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                     {
@@ -43,61 +38,38 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                         cmd.Parameters.AddWithValue("@LastName", User.LastName);
                         cmd.Parameters.AddWithValue("@Username", User.Username);
                         cmd.Parameters.AddWithValue("@Email", User.Email);
-                        cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(User.Password));
-                        cmd.Parameters.AddWithValue("@userId", id);
+                        cmd.Parameters.AddWithValue("@UserId", User.UserId);
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
                     }
                 }
-                return RedirectToPage("/Account/Menus/ManageAccounts");
+                return RedirectToPage("ManageAccounts");
             }
             else
             {
                 return Page();
             }
         }
-        public IActionResult OnPostDelete(int userId)
-        {
-            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
-            {
-                string cmdText = "DELETE FROM Users WHERE UserId = @userId";
-
-                using (SqlCommand cmd = new SqlCommand(cmdText, conn))
-                {
-                    cmd.Parameters.AddWithValue("@userId", userId);
-
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                }
-            }
-
-            return RedirectToPage("/Account/Menus/ManageAccounts");
-        }
 
         private void PopulateUser(int id)
         {
-            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = @"
-            SELECT UserId, FirstName, LastName, Username, Email, PasswordHash
-            FROM Users 
-            WHERE UserId=@userId";
+                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email FROM Users WHERE UserId = @UserId";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
-                cmd.Parameters.AddWithValue("@userId", id);
+                cmd.Parameters.AddWithValue("@UserId", id);
                 conn.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-                if (reader.HasRows)
+                using (var reader = cmd.ExecuteReader())
                 {
-                    reader.Read();
-                    User.UserId = id;
-                    User.FirstName = reader.GetString(reader.GetOrdinal("FirstName"));
-                    User.LastName = reader.GetString(reader.GetOrdinal("LastName"));
-                    User.Username = reader.GetString(reader.GetOrdinal("Username"));
-                    User.Email = reader.GetString(reader.GetOrdinal("Email"));
-                    User.Password = reader.GetString(reader.GetOrdinal("PasswordHash"));
-                    
-
+                    if (reader.Read())
+                    {
+                        User.UserId = reader.GetInt32(0);
+                        User.FirstName = reader.GetString(1);
+                        User.LastName = reader.GetString(2);
+                        User.Username = reader.GetString(3);
+                        User.Email = reader.GetString(4);
+                    }
                 }
             }
         }

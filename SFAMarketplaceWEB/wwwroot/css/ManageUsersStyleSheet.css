@@ -1,0 +1,33 @@
+﻿body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white; /* Ensures all text is white */
+}
+
+table {
+    width: 100%; /* Full width tables */
+    border-collapse: collapse; /* Ensures borders between cells are merged */
+}
+
+table, th, td {
+    border: 1px solid #555; /* Lighter border color for visibility */
+}
+
+th, td {
+    padding: 8px; /* Padding for table cells */
+    text-align: left; /* Align text to the left within cells */
+}
+
+th {
+    background-color: #333; /* Darker background for header cells */
+}
+
+a {
+    color: #4da6ff; /* Light blue color for links for better visibility */
+}
+
+    a:hover {
+        text-decoration: underline; /* Underline on hover to indicate clickable */
+    }

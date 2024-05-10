@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
 
-namespace SFAMarketplaceWEB.Pages.Account.Menus
+namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 {
     [Authorize]
     public class AddAccountModel : PageModel
@@ -24,7 +24,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
                     AddUser();
-                    return RedirectToPage("ManageAccounts");
+                    return RedirectToPage("ManageUsers");
                 }
                 else
                 {

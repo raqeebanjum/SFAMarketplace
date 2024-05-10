@@ -23,74 +23,71 @@ namespace SFAMarketplaceWEB.Pages.Account
         {
             if (ModelState.IsValid)
             {
-                if (ValidateCredentials())
-                {
-                    return RedirectToPage("/Account/Menus/PostedItems");
-                }
-                else
-                {
-                    ModelState.AddModelError("LoginError", "Invalid credentials.Try Again.");
-
-                    return Page();
-                }
+                IActionResult loginResult = ValidateCredentials();
+                return loginResult;
             }
-            else
+            return Page();
+        }
+
+
+        private IActionResult ValidateCredentials()
+        {
+            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
+                string cmdText = "SELECT PasswordHash, UserID, FirstName, Email, Role FROM Users WHERE Username=@username";
+                SqlCommand cmd = new SqlCommand(cmdText, conn);
+                cmd.Parameters.AddWithValue("@username", LoginUser.Username);
+                conn.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    if (!reader.IsDBNull(0))
+                    {
+                        string passwordHash = reader.GetString(0);
+                        if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
+                        {
+                            int userID = reader.GetInt32(1);
+                            string name = reader.GetString(2);
+                            string email = reader.GetString(3);
+                            int role = reader.GetInt32(4);
+
+                            UpdateLastLoginTime(userID);
+
+                            List<Claim> claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, userID.ToString()),
+                        new Claim(ClaimTypes.Email, email),
+                        new Claim(ClaimTypes.Name, name),
+                        new Claim("Role", role.ToString()) 
+                    };
+
+                            ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                            if (role == 0)
+                            {
+                                return RedirectToPage("/Account/AdminPage/ManageUsers");
+                            }
+
+                            return RedirectToPage("/Account/Menus/PostedItems");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("LoginError", "Invalid credentials.");
+                            return Page();
+                        }
+                    }
+                }
+                ModelState.AddModelError("LoginError", "Invalid credentials.");
                 return Page();
             }
         }
 
 
-     private bool ValidateCredentials()
-{
-    using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
-    {
-        string cmdText = "SELECT PasswordHash, UserID, FirstName, Email, LastLoginTime FROM Users WHERE Username=@username";
-        SqlCommand cmd = new SqlCommand(cmdText, conn);
-        cmd.Parameters.AddWithValue("@username", LoginUser.Username);
-        conn.Open();
-        SqlDataReader reader = cmd.ExecuteReader();
-        if (reader.HasRows)
-        {
-            reader.Read();
-            if (reader.IsDBNull(0))
-            {
-                return false;
-            }
-            else
-            {
-                string passwordHash = reader.GetString(0);
-                if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
-                {
-                    int userID = reader.GetInt32(1);
-                    UpdateLastLoginTime(userID);
 
-                    string name = reader.GetString(2);
-                    string email = reader.GetString(3);
-                    
-                    List<Claim> claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.NameIdentifier, userID.ToString()),
-                        new Claim(ClaimTypes.Email, email),
-                        new Claim(ClaimTypes.Name, name)
-                    };
-                    
-                    ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        return false;
-    }
-}
 
 
         private void UpdateLastLoginTime(int userID)
