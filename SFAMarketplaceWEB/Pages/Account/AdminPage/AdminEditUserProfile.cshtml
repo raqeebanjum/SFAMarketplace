@@ -13,6 +13,13 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="User.UserId" />
+
+        <div class="form-group">
+            <label asp-for="User.ProfilePictureURL">Profile Picture URL</label>
+            <input asp-for="User.ProfilePictureURL" class="form-control" />
+            <span asp-validation-for="User.ProfilePictureURL" class="text-danger"></span>
+        </div>
+
         <div class="form-group">
             <label asp-for="User.FirstName">First Name</label>
             <input asp-for="User.FirstName" class="form-control" />

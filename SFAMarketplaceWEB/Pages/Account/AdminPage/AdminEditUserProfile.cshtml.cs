@@ -29,10 +29,10 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
-                    UPDATE Users
-                    SET FirstName = @FirstName, LastName = @LastName, Username = @Username,
-                        Email = @Email, PasswordHash = @PasswordHash
-                    WHERE UserId = @UserId";
+            UPDATE Users
+            SET FirstName = @FirstName, LastName = @LastName, Username = @Username,
+                Email = @Email, PasswordHash = @PasswordHash, ProfilePictureURL = @ProfilePictureURL
+            WHERE UserId = @UserId";
 
                 using (var cmd = new SqlCommand(cmdText, conn))
                 {
@@ -42,6 +42,7 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                     cmd.Parameters.AddWithValue("@Username", User.Username);
                     cmd.Parameters.AddWithValue("@Email", User.Email);
                     cmd.Parameters.AddWithValue("@PasswordHash", SecurityHelper.GeneratePasswordHash(User.Password));
+                    cmd.Parameters.AddWithValue("@ProfilePictureURL", User.ProfilePictureURL ?? (object)DBNull.Value);  // Handle null URL
                     cmd.Parameters.AddWithValue("@UserId", User.UserId);
                     cmd.ExecuteNonQuery();
                 }
@@ -49,11 +50,12 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 
             return RedirectToPage("/Account/AdminPage/ManageUsers");
         }
+
         private void PopulateUserDetails(int userId)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email FROM Users WHERE UserId = @UserId";
+                string cmdText = "SELECT UserId, FirstName, LastName, Username, Email, ProfilePictureURL FROM Users WHERE UserId = @UserId";
                 using (var cmd = new SqlCommand(cmdText, conn))
                 {
                     conn.Open();
@@ -68,13 +70,15 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName")),
                                 Username = reader.GetString(reader.GetOrdinal("Username")),
-                                Email = reader.GetString(reader.GetOrdinal("Email"))
+                                Email = reader.GetString(reader.GetOrdinal("Email")),
+                                ProfilePictureURL = reader.IsDBNull(reader.GetOrdinal("ProfilePictureURL")) ? null : reader.GetString(reader.GetOrdinal("ProfilePictureURL"))
                             };
                         }
                     }
                 }
             }
         }
+
 
     }
 }
