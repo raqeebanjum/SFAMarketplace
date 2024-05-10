@@ -4,7 +4,6 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-
 .item-form-container {
     background-color: #333;
     padding: 20px;
@@ -13,6 +12,7 @@
     width: 60%;
     margin: 20px auto;
 }
+
 
 .form-title {
     color: #55aaff;
@@ -67,14 +67,19 @@
     border-radius: 4px;
 }
 
-
-.form-buttons-wrapper {
+.form-buttons-container {
     display: flex;
-    justify-content: flex-start; /* Align buttons to the start of the container */
-    gap: 10px; /* Space between the buttons */
+    justify-content: start;
+    margin-top: 10px;
 }
 
-.item-edit-form,
+.btn-primary, .btn-danger {
+    padding: 10px 15px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    margin-right: 10px;
+}
 .item-delete-form {
-    flex-grow: 1; /* Allows both forms to grow and fill the space evenly */
+    margin-top: 10px; /* Adjust the value as needed for visual balance */
 }
