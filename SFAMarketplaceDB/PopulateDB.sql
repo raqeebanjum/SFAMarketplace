@@ -1,6 +1,6 @@
 ﻿SET IDENTITY_INSERT [dbo].[Users] ON 
 GO
-INSERT [dbo].[Users] ([UserID], [FirstName], [LastName], [Username], [Email], [PasswordHash], [ProfilePictureURL], [Role], [LastLoginTime]) VALUES (1, N'Johnny', N'Appleseed', N'Johnny', N'johnny@sfa.com', N'$2a$13$1wulEcBcSQ2HJKtiw8aJXu6BvHntMJPdwsmNsvH01qkgHJe00vKPG', NULL, 1, CAST(N'2024-04-13T20:07:19.073' AS DateTime))
+INSERT [dbo].[Users] ([UserID], [FirstName], [LastName], [Username], [Email], [PasswordHash], [ProfilePictureURL], [Role], [LastLoginTime]) VALUES (1, N'Johnny', N'Appleseed', N'Johnny', N'johnny@sfa.com', N'$2a$13$1wulEcBcSQ2HJKtiw8aJXu6BvHntMJPdwsmNsvH01qkgHJe00vKPG', NULL, 0, CAST(N'2024-04-13T20:07:19.073' AS DateTime))
 GO
 SET IDENTITY_INSERT [dbo].[Users] OFF
 GO
