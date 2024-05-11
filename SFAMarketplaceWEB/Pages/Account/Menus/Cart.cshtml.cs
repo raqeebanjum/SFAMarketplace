@@ -9,19 +9,21 @@ using System.Collections.Generic;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
-    [Authorize]
+    [Authorize] // Ensures only authorized users can access this page
     public class CartPageModel : PageModel
     {
-        public Cart UserCart { get; set; } = new Cart();
-        public List<SelectListItem> PickupLocations { get; set; } = new List<SelectListItem>();
+        public Cart UserCart { get; set; } = new Cart(); // Represents the user's shopping cart
+        public List<SelectListItem> PickupLocations { get; set; } = new List<SelectListItem>(); // Holds pickup location options for cart items
 
+        // Retrieves and displays the cart contents and pickup locations when the page is accessed
         public void OnGet()
         {
             string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            PopulateCart(currentUserID);
-            PopulatePickupLocations();
+            PopulateCart(currentUserID); // Load items in the user's cart
+            PopulatePickupLocations(); // Load available pickup locations
         }
 
+        // Populates the UserCart with items from the database for the current user
         private void PopulateCart(string userId)
         {
             UserCart.Item = new List<ItemsInCart>();
@@ -54,11 +56,12 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                         }
                     };
 
-                    UserCart.Item.Add(itemInCart);
+                    UserCart.Item.Add(itemInCart); // Add each item to the UserCart
                 }
             }
         }
 
+        // Fetches and populates the list of available pickup locations from the database
         private void PopulatePickupLocations()
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -79,11 +82,12 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
+        // Processes the deletion of an item from the cart
         public IActionResult OnPostDeleteItem(int cartItemId)
         {
             if (cartItemId <= 0)
             {
-                return Page();
+                return Page(); // Return to the page if the CartItemID is not valid
             }
 
             try
@@ -96,28 +100,27 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                     {
                         cmd.Parameters.AddWithValue("@CartItemID", cartItemId);
-                        cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery(); // Execute the deletion
                     }
                 }
 
                 TempData["SuccessMessage"] = "Item removed from cart successfully.";
-                return RedirectToPage(); 
+                return RedirectToPage(); // Reload the page to reflect the change
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Error removing item from cart: " + ex.Message);
+                ModelState.AddModelError("", "Error removing item from cart: " + ex.Message); // Handle any exceptions
                 return Page();
             }
         }
 
-
-
+        // Handles the checkout process by deleting all cart items and redirecting to the checkout page
         public IActionResult OnPostCheckout()
         {
             string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(currentUserID))
             {
-                return RedirectToPage("/Account/Login");
+                return RedirectToPage("/Account/Login"); // Redirect to login if the user is not identified
             }
 
             try
@@ -130,15 +133,15 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                     {
                         cmd.Parameters.AddWithValue("@UserID", currentUserID);
-                        cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery(); // Clear the user's cart
                     }
                 }
 
-                return RedirectToPage("/Account/Menus/Checkout");
+                return RedirectToPage("/Account/Menus/Checkout"); // Redirect to the checkout page
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "Error during checkout: " + ex.Message);
+                ModelState.AddModelError("", "Error during checkout: " + ex.Message); // Handle any exceptions during checkout
                 return Page();
             }
         }
