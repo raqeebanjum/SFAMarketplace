@@ -14,9 +14,9 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
     [BindProperties]
     public class EditProfileModel : PageModel
     {
-        public UpdatedPassword updatedPassword {  get; set; }
+        public UpdatedPassword updatedPassword { get; set; }
 
-       
+
         public void OnGet()
         {
         }
@@ -38,7 +38,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 SELECT PasswordHash FROM Users WHERE UserId = @userID";
                 using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                 {
-                    
+
                     cmd.Parameters.AddWithValue("@userID", userId);
                     conn.Open();
 
