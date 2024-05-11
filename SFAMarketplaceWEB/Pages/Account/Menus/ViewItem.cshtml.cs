@@ -9,17 +9,20 @@ using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
     [BindProperties]
     public class ViewItemModel : PageModel
     {
+        // Property to hold the item
         public Item Item { get; set; }
-        public string PostedBy { get; set; } // this is to store the username of whoever posted the item
 
+        // Property to store the username of the item poster
+        public string PostedBy { get; set; }
+
+        // Handler for HTTP GET requests
         public void OnGet(int itemId)
         {
-            string deafaultPhoto = "https://dartmoormat.org.uk/wp-content/themes/twentytwentyone-child/img/placeholder.png";
-
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
@@ -36,15 +39,16 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         if (reader.Read())
                         {
+                            // Map item properties
                             Item = new Item
                             {
                                 ItemID = reader.GetInt32("ItemID"),
                                 UserID = !reader.IsDBNull(reader.GetOrdinal("UserID")) ? reader.GetInt32("UserID") : (int?)null,
                                 ItemName = reader.GetString("ItemName"),
                                 ItemDescription = reader.GetString("ItemDescription"),
-                                ItemPhotoURL1 = IsValidUrl(reader.GetString("ItemPhotoURL1")) ? reader.GetString("ItemPhotoURL1") : deafaultPhoto,
-                                ItemPhotoURL2 = IsValidUrl(reader.GetString("ItemPhotoURL2")) ? reader.GetString("ItemPhotoURL2") : deafaultPhoto,
-                                ItemPhotoURL3 = IsValidUrl(reader.GetString("ItemPhotoURL3")) ? reader.GetString("ItemPhotoURL3") : deafaultPhoto,
+                                ItemPhotoURL1 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL1")) ? reader.GetString("ItemPhotoURL1") : null,
+                                ItemPhotoURL2 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL2")) ? reader.GetString("ItemPhotoURL2") : null,
+                                ItemPhotoURL3 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL3")) ? reader.GetString("ItemPhotoURL3") : null,
                                 ItemPrice = reader.GetDecimal("ItemPrice"),
                                 CategoryID = !reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? reader.GetInt32("CategoryID") : (int?)null,
                                 ItemTradeStatus = reader.GetBoolean("ItemTradeStatus"),
@@ -67,7 +71,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
-
+        // Handler for adding item to cart
         public IActionResult OnPostAddToCart(int itemId)
         {
             string currentUserID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -114,6 +118,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+
+        // Handler for adding item to wishlist
         public IActionResult OnPostAddToWishlist(int itemId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -156,8 +162,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
-
-
+        // Method to ensure user has a cart
         private int EnsureUserHasCart(SqlConnection conn, string userId)
         {
             string checkCartCmd = "SELECT CartID FROM Cart WHERE UserID = @UserID";
@@ -179,16 +184,5 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
-
-        bool IsValidUrl(string url)
-        {
-            Uri uriResult;
-            bool isValidUri = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
-                             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-
-            return isValidUri;
-        }
-
-
     }
 }
