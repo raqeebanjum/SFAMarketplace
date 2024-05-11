@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Model;
-using SFAMarketplaceWEB.Models;
 using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account
@@ -15,42 +14,23 @@ namespace SFAMarketplaceWEB.Pages.Account
         [BindProperty]
         public Login LoginUser { get; set; }
 
+        // Handler for HTTP GET requests
         public void OnGet()
         {
         }
 
+        // Handler for HTTP POST requests
         public IActionResult OnPost()
         {
             if (ModelState.IsValid)
             {
-                var user = ValidateCredentials();
-                if (user != null)
+                if (ValidateCredentials())
                 {
-                    var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FirstName),
-                new Claim(ClaimTypes.Role, user.Role == 0 ? "Admin" : "User")
-            };
-
-                    var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                    var principal = new ClaimsPrincipal(identity);
-
-                    HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-
-                    if (user.Role == 0)
-                    {
-                        return RedirectToPage("/Account/AdminPage/ManageUsers");
-                    }
-                    else
-                    {
-                        return RedirectToPage("/Account/Menus/PostedItems");
-                    }
+                    return RedirectToPage("/Account/Menus/PostedItems");
                 }
                 else
                 {
-                    ModelState.AddModelError("LoginError", "Invalid credentials. Try again.");
+                    ModelState.AddModelError("LoginError", "Invalid credentials. Try Again.");
                     return Page();
                 }
             }
@@ -60,12 +40,12 @@ namespace SFAMarketplaceWEB.Pages.Account
             }
         }
 
-
-        private User ValidateCredentials()
+        // Method to validate user credentials
+        private bool ValidateCredentials()
         {
-            using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
+            using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT UserID, FirstName, Email, PasswordHash, Role FROM Users WHERE Username = @username";
+                string cmdText = "SELECT PasswordHash, UserID, FirstName, Email, LastLoginTime FROM Users WHERE Username=@username";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@username", LoginUser.Username);
                 conn.Open();
@@ -73,27 +53,54 @@ namespace SFAMarketplaceWEB.Pages.Account
                 if (reader.HasRows)
                 {
                     reader.Read();
-                    string passwordHash = reader.GetString(3);
-                    if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
+                    if (reader.IsDBNull(0))
                     {
-                        return new User
+                        return false;
+                    }
+                    else
+                    {
+                        string passwordHash = reader.GetString(0);
+                        if (SecurityHelper.VerifyPassword(LoginUser.Password, passwordHash))
                         {
-                            UserId = reader.GetInt32(0),
-                            FirstName = reader.GetString(1),
-                            Email = reader.GetString(2),
-                            Role = reader.GetInt32(4)
-                        };
+                            int userID = reader.GetInt32(1);
+                            UpdateLastLoginTime(userID);
+
+                            string name = reader.GetString(2);
+                            string email = reader.GetString(3);
+
+                            // Create claims for the authenticated user
+                            List<Claim> claims = new List<Claim>
+                            {
+                                new Claim(ClaimTypes.NameIdentifier, userID.ToString()),
+                                new Claim(ClaimTypes.Email, email),
+                                new Claim(ClaimTypes.Name, name)
+                            };
+
+                            // Create identity for the authenticated user
+                            ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+
+                            // Sign in the user
+                            HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                 }
+                return false;
             }
-            return null;
         }
 
+        // Method to update last login time
         private void UpdateLastLoginTime(int userID)
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "UPDATE Users SET LastLoginTime = @lastLoginTime WHERE UserID = @userID";
+                string cmdText = "UPDATE Users SET LastLoginTime=@lastLoginTime WHERE UserID=@userID";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 cmd.Parameters.AddWithValue("@lastLoginTime", DateTime.Now);
                 cmd.Parameters.AddWithValue("@userID", userID);
