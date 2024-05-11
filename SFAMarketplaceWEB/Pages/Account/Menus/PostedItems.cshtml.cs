@@ -46,6 +46,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
         {
             items.Clear();
             string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value; // Retrieve the current user's ID
+            string deafaultPhoto = "https://dartmoormat.org.uk/wp-content/themes/twentytwentyone-child/img/placeholder.png";
 
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
@@ -69,7 +70,7 @@ AND UserID != @CurrentUserID"; // Add a condition to exclude items posted by the
                         ItemName = reader.GetString("ItemName"),
                         ItemDescription = reader.GetString("ItemDescription"),
                         ItemPrice = reader.GetDecimal("ItemPrice"),
-                        ItemPhotoURL1 = reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL1")) ? null : reader.GetString(reader.GetOrdinal("ItemPhotoURL1")),
+                        ItemPhotoURL1 = IsValidUrl(reader.GetString("ItemPhotoURL1")) ? reader.GetString("ItemPhotoURL1") : deafaultPhoto,
                         CategoryID = reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? (int?)null : reader.GetInt32(reader.GetOrdinal("CategoryID")),
                         ItemTradeStatus = reader.GetBoolean("ItemTradeStatus"),
                         DatePosted = reader.GetDateTime("DatePosted")
@@ -102,6 +103,15 @@ AND UserID != @CurrentUserID"; // Add a condition to exclude items posted by the
                     });
                 }
             }
+        }
+
+        bool IsValidUrl(string url)
+        {
+            Uri uriResult;
+            bool isValidUri = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            return isValidUri;
         }
     }
 }

@@ -18,6 +18,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public void OnGet(int itemId)
         {
+            string deafaultPhoto = "https://dartmoormat.org.uk/wp-content/themes/twentytwentyone-child/img/placeholder.png";
+
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = @"
@@ -40,9 +42,9 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                                 UserID = !reader.IsDBNull(reader.GetOrdinal("UserID")) ? reader.GetInt32("UserID") : (int?)null,
                                 ItemName = reader.GetString("ItemName"),
                                 ItemDescription = reader.GetString("ItemDescription"),
-                                ItemPhotoURL1 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL1")) ? reader.GetString("ItemPhotoURL1") : null,
-                                ItemPhotoURL2 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL2")) ? reader.GetString("ItemPhotoURL2") : null,
-                                ItemPhotoURL3 = !reader.IsDBNull(reader.GetOrdinal("ItemPhotoURL3")) ? reader.GetString("ItemPhotoURL3") : null,
+                                ItemPhotoURL1 = IsValidUrl(reader.GetString("ItemPhotoURL1")) ? reader.GetString("ItemPhotoURL1") : deafaultPhoto,
+                                ItemPhotoURL2 = IsValidUrl(reader.GetString("ItemPhotoURL2")) ? reader.GetString("ItemPhotoURL2") : deafaultPhoto,
+                                ItemPhotoURL3 = IsValidUrl(reader.GetString("ItemPhotoURL3")) ? reader.GetString("ItemPhotoURL3") : deafaultPhoto,
                                 ItemPrice = reader.GetDecimal("ItemPrice"),
                                 CategoryID = !reader.IsDBNull(reader.GetOrdinal("CategoryID")) ? reader.GetInt32("CategoryID") : (int?)null,
                                 ItemTradeStatus = reader.GetBoolean("ItemTradeStatus"),
@@ -176,6 +178,15 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     return (int)createCmd.ExecuteScalar();
                 }
             }
+        }
+
+        bool IsValidUrl(string url)
+        {
+            Uri uriResult;
+            bool isValidUri = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            return isValidUri;
         }
 
 

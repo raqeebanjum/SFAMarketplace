@@ -23,6 +23,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
 
         public IActionResult OnPost(int id)
         {
+            string deafaultPhoto = "https://dartmoormat.org.uk/wp-content/themes/twentytwentyone-child/img/placeholder.png";
             if (ModelState.IsValid)
             {
                 using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -44,13 +45,13 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         cmd.Parameters.AddWithValue("@ItemName", Item.ItemName);
                         cmd.Parameters.AddWithValue("@ItemDescription", Item.ItemDescription);
-                        cmd.Parameters.AddWithValue("@ItemPhotoURL1", string.IsNullOrEmpty(Item.ItemPhotoURL1) ? (object)DBNull.Value : Item.ItemPhotoURL1);
-                        cmd.Parameters.AddWithValue("@ItemPhotoURL2", string.IsNullOrEmpty(Item.ItemPhotoURL2) ? (object)DBNull.Value : Item.ItemPhotoURL2);
-                        cmd.Parameters.AddWithValue("@ItemPhotoURL3", string.IsNullOrEmpty(Item.ItemPhotoURL3) ? (object)DBNull.Value : Item.ItemPhotoURL3);
+                        cmd.Parameters.AddWithValue("@ItemPhotoURL1", !IsValidUrl(Item.ItemPhotoURL1) ? deafaultPhoto : Item.ItemPhotoURL1);
+                        cmd.Parameters.AddWithValue("@ItemPhotoURL2", !IsValidUrl(Item.ItemPhotoURL2) ? deafaultPhoto : Item.ItemPhotoURL2);
+                        cmd.Parameters.AddWithValue("@ItemPhotoURL3", !IsValidUrl(Item.ItemPhotoURL3) ? deafaultPhoto : Item.ItemPhotoURL3);
                         cmd.Parameters.AddWithValue("@ItemPrice", Item.ItemPrice);
                         cmd.Parameters.AddWithValue("@CategoryID", Item.CategoryID ?? (object)DBNull.Value);
                         cmd.Parameters.AddWithValue("@ItemTradeStatus", Item.ItemTradeStatus);
-                        cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now); 
+                        cmd.Parameters.AddWithValue("@DatePosted", DateTime.Now);
                         cmd.Parameters.AddWithValue("@itemId", id);
 
                         conn.Open();
@@ -129,6 +130,15 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     Item.ItemTradeStatus = reader.GetBoolean(reader.GetOrdinal("ItemTradeStatus"));
                 }
             }
+        }
+
+        bool IsValidUrl(string url)
+        {
+            Uri uriResult;
+            bool isValidUri = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
+                             && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            return isValidUri;
         }
     }
 }
