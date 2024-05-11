@@ -27,14 +27,16 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 
         private void PopulateUser()
         {
-            users.Clear(); 
+            users.Clear(); // Clear the list before repopulating it
 
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
+                // SQL query modified to exclude users with Role 0
                 string cmdText = @"
-                SELECT UserId, FirstName, LastName, Username, Email, Role, PasswordHash
-                FROM Users
-                ORDER BY UserId";
+        SELECT UserId, FirstName, LastName, Username, Email, Role, PasswordHash
+        FROM Users
+        WHERE Role <> 0
+        ORDER BY UserId";
 
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 conn.Open();
@@ -52,13 +54,11 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                         Password = reader.GetString(reader.GetOrdinal("PasswordHash")),
                     };
 
-                    if (user.Username != "Johnny")
-                    {
-                        users.Add(user);
-                    }
+                    users.Add(user);
                 }
             }
         }
+
 
         public IActionResult OnPostDelete(int userId)
         {
