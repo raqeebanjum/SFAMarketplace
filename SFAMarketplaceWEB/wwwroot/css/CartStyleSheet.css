@@ -69,7 +69,7 @@
 
 /* Specific styles for the checkout button */
 button[type="submit"] {
-    padding: 1.5vh 8vw; /* Adjusted padding for a longer and slimmer look */
+    padding: 12px 30px; /* Moderate padding for better button sizing */
     border-radius: 5px;
     border: none;
     color: #fff;
@@ -78,21 +78,14 @@ button[type="submit"] {
     font-weight: bold;
     transition: background-color 0.2s;
     display: block;
-    margin: 4% auto 2%; /* Increased top margin to move button down from the total */
-    width: auto; /* Adjust width to be more responsive */
-    font-size: 1.2rem; /* Ensure text size is readable and proportionate */
+    margin: 10px auto; /* Adequate margin to keep the button centered and spaced */
+    width: auto; /* Automatic width to adjust based on content size */
+    font-size: 1.1rem; /* Slightly larger font size for better readability */
 }
-
-    button[type="submit"]:hover {
-        background-color: #5a4dad; /* Darker shade on hover for visual feedback */
-    }
-
-
 
     button[type="submit"]:hover {
         background-color: #5a4dad; /* Darker purple on hover for better user feedback */
     }
-
 
 
 /* Dropdown Menu Styling */

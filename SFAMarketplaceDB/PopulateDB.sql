@@ -77,3 +77,17 @@ ADD CONSTRAINT FK_Wishlist_ItemID
 FOREIGN KEY (ItemID) REFERENCES [dbo].[Item] (ItemID)
 ON DELETE CASCADE;
 GO
+
+
+-- Dropping existing foreign key constraint on UserID in the Item table if it exists
+ALTER TABLE [dbo].[Item] DROP CONSTRAINT IF EXISTS FK_Item_UserID;
+GO
+
+-- Adding a new foreign key constraint with ON DELETE CASCADE
+ALTER TABLE [dbo].[Item]
+ADD CONSTRAINT FK_Item_UserID
+FOREIGN KEY (UserID) REFERENCES [dbo].[Users] (UserID)
+ON DELETE CASCADE;
+GO
+
+

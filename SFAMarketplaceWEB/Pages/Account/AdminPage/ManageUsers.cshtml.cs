@@ -27,15 +27,14 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 
         private void PopulateUser()
         {
-            users.Clear(); // Ensure the list is empty before populating
+            users.Clear(); 
 
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                // Fetching all user details without ORDER BY NEWID() to list them in their natural order
                 string cmdText = @"
                 SELECT UserId, FirstName, LastName, Username, Email, Role, PasswordHash
                 FROM Users
-                ORDER BY UserId";  // Using UserId to order can make the list predictable
+                ORDER BY UserId";
 
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 conn.Open();
@@ -55,7 +54,7 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 
                     if (user.Username != "Johnny")
                     {
-                        users.Add(user);  // Add every user to the list
+                        users.Add(user);
                     }
                 }
             }
@@ -75,7 +74,7 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                 }
             }
 
-            return RedirectToPage();  // Refresh the same page to show the updated user list
+            return RedirectToPage();
         }
 
 
