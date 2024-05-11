@@ -1,10 +1,13 @@
-﻿body, html {
+﻿/* CSS styling for body and html elements */
+body, html {
     height: 100%;
     margin: 0;
     padding: 0;
     background-color: #282a36;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* CSS styling for navbar */
 nav.navbar {
     width: 100%;
     position: fixed;
@@ -13,13 +16,14 @@ nav.navbar {
     background: #fff;
 }
 
-
+/* CSS styling for h2 elements */
 h2 {
     text-align: center;
     color: #333;
     margin-bottom: 5%;
 }
 
+/* CSS styling for form container */
 .form-container {
     display: flex;
     flex-direction: column;
@@ -28,6 +32,7 @@ h2 {
     min-height: 100vh;
 }
 
+/* CSS styling for forms */
 form {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 1.5rem;
@@ -37,6 +42,7 @@ form {
     max-width: 400px;
     backdrop-filter: blur(10px);
 }
+
 /* Styles for input fields with placeholders instead of labels */
 .form-group input[type="text"],
 .form-group input[type="email"],
@@ -49,15 +55,17 @@ form {
     background-color: transparent;
     transition: all 0.3s ease;
 }
-/* Hiding placeholder text on focus */
-.form-group input[type="text"]:focus,
-.form-group input[type="email"]:focus,
-.form-group input[type="password"]:focus {
-    outline: none;
-    border-color: #6c5ce7;
-    background-color: #e3e3e3;
-    placeholder: transparent;
- }
+
+    /* Hiding placeholder text on focus */
+    .form-group input[type="text"]:focus,
+    .form-group input[type="email"]:focus,
+    .form-group input[type="password"]:focus {
+        outline: none;
+        border-color: #6c5ce7;
+        background-color: #e3e3e3;
+        placeholder: transparent;
+    }
+
 /* Style for the submit button */
 button[type="submit"] {
     padding: 1vh 4vw;
@@ -72,23 +80,24 @@ button[type="submit"] {
     margin: 2% auto;
     width: fit-content;
 }
-button[type="submit"]:hover {
-        background-color: #5a4dad;
-}
 
+    button[type="submit"]:hover {
+        background-color: #5a4dad;
+    }
+
+/* CSS styling for register link */
 .register-link {
     color: #fff;
     text-align: center;
     margin-top: 2rem;
 }
 
-.register-link a {
+    .register-link a {
         color: inherit;
         text-decoration: none;
         font-weight: bold;
-}
+    }
 
- .register-link a:hover {
+        .register-link a:hover {
             text-decoration: underline;
- }
-
+        }

@@ -1,14 +1,17 @@
-﻿body, html {
+﻿/* CSS styling for body and html elements */
+body, html {
     background-color: #282a36;
     color: white;
 }
 
+/* CSS styling for card image */
 .card-img-top {
     width: 100%; /* Makes the image fill the container width */
     height: 200px; /* Set a fixed height for the images */
     object-fit: cover; /* Ensures the image covers the area without distorting */
 }
 
+/* CSS styling for image placeholder */
 .image-placeholder {
     display: flex;
     align-items: center;
@@ -21,6 +24,8 @@
     text-align: center;
     /* object-fit removed from here since it's not applicable to div elements */
 }
+
+/* CSS styling for cards */
 .card {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: 0.1s;
@@ -28,14 +33,15 @@
 
     .card:hover {
         box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-        
     }
 
+/* CSS styling for card body */
 .card-body {
     padding: 15px;
-    color: black;
+    color: black; /* Color for the text inside the card body */
 }
 
+/* Media query for smaller screens */
 @media (max-width: 767px) {
     .col-md-4 {
         flex: 0 0 100%;

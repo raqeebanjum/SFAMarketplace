@@ -10,43 +10,47 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
-    [Authorize]
-    [BindProperties]
+    [Authorize] // Ensures only authorized users can access this page
+    [BindProperties] // Automatically binds form inputs to properties
     public class AddItemModel : PageModel
     {
-        public Item NewItem { get; set; } = new Item();
-        public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>();
+        public Item NewItem { get; set; } = new Item(); // Holds new item details
+        public List<SelectListItem> Categories { get; set; } = new List<SelectListItem>(); // Holds dropdown list for categories
 
+        // Populate categories dropdown when the page is accessed
         public void OnGet()
         {
             PopulateCategoryDDL();
         }
 
+        // Handles the post request when a new item is submitted
         public IActionResult OnPost()
         {
+            // Validate that the item price is not negative
             if (NewItem.ItemPrice < 0)
             {
                 ModelState.AddModelError("NewItem.ItemPrice", "Price cannot be negative.");
             }
 
+            // Save item if model state is valid
             if (ModelState.IsValid)
             {
                 SaveItemDetails();
-                return RedirectToPage("PostedItems");
+                return RedirectToPage("PostedItems"); // Redirect to the PostedItems page on success
             }
             else
             {
-                PopulateCategoryDDL();
-                return Page();
+                PopulateCategoryDDL(); // Repopulate dropdown list if there's an error
+                return Page(); // Return to the current page
             }
         }
 
-
+        // Populates the category dropdown list from the database
         private void PopulateCategoryDDL()
         {
             using (SqlConnection conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName"; 
+                string cmdText = "SELECT CategoryId, CategoryName FROM Category ORDER BY CategoryName";
                 SqlCommand cmd = new SqlCommand(cmdText, conn);
                 conn.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -60,6 +64,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
+
+        // Saves the new item details to the database
         private void SaveItemDetails()
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -87,10 +93,5 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
-
-
-
-
-
     }
 }

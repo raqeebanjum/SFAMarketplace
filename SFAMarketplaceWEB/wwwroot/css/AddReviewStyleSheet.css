@@ -1,5 +1,16 @@
-﻿body {
+﻿/* CSS styling for the body element */
+
+/* Background color */
+body {
     background-color: #282a36;
+}
+
+/* Text color */
+body {
     color: #f8f8f2;
+}
+
+/* Font family */
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

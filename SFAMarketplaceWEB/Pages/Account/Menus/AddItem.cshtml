@@ -1,17 +1,22 @@
 ﻿@page
 @model SFAMarketplaceWEB.Pages.Account.Menus.AddItemModel
+
 @{
+    // Set the layout based on user authentication status
     Layout = HttpContext.User.Identity.IsAuthenticated ? "_LayoutAuthenticated" : "_Layout";
 }
 
 @section Styles {
+            // Link to the CSS styles for adding an item
     <link rel="stylesheet" href="~/css/AddItemStyleSheet.css" />
 }
 
 <div class="item-form-container">
     <h2 class="form-title">Add New Item</h2>
+    // Display the validation summary if there are errors
     <div asp-validation-summary="All" class="text-danger"></div>
 
+    // Show detailed validation errors if the model state is invalid
     @if (!ModelState.IsValid)
     {
         <div class="alert alert-danger">
@@ -28,18 +33,23 @@
         </div>
     }
 
+    <!-- Form for submitting new item details -->
     <form method="post" enctype="multipart/form-data">
+        <!-- Input for item name -->
         <div class="form-group">
             <label asp-for="NewItem.ItemName" class="form-label">Item Name:</label>
             <input asp-for="NewItem.ItemName" class="form-control" />
             <span asp-validation-for="NewItem.ItemName" class="text-danger"></span>
         </div>
+
+        <!-- Textarea for item description -->
         <div class="form-group">
             <label asp-for="NewItem.ItemDescription" class="form-label">Description:</label>
             <textarea asp-for="NewItem.ItemDescription" class="form-control"></textarea>
             <span asp-validation-for="NewItem.ItemDescription" class="text-danger"></span>
         </div>
 
+        <!-- Inputs for up to three item photos -->
         <div class="form-group">
             <label asp-for="NewItem.ItemPhotoURL1" class="form-label">Photo URL 1:</label>
             <input asp-for="NewItem.ItemPhotoURL1" class="form-control" />
@@ -56,12 +66,14 @@
             <span asp-validation-for="NewItem.ItemPhotoURL3" class="text-danger"></span>
         </div>
 
+        <!-- Input for item price -->
         <div class="form-group">
             <label asp-for="NewItem.ItemPrice" class="form-label">Price:</label>
             <input asp-for="NewItem.ItemPrice" type="number" step="0.01" min="0" class="form-control" />
             <span asp-validation-for="NewItem.ItemPrice" class="text-danger"></span>
         </div>
 
+        <!-- Dropdown for selecting item category -->
         <div class="row m-2">
             <div class="col-2">
                 <label asp-for="NewItem.CategoryID" class="form-label">Category:</label>
@@ -74,11 +86,13 @@
             </div>
         </div>
 
+        <!-- Checkbox for item trade status -->
         <div class="form-group">
             <label asp-for="NewItem.ItemTradeStatus" class="form-label">Trade Status:</label>
             <input asp-for="NewItem.ItemTradeStatus" type="checkbox" class="form-check-input" />
             <span asp-validation-for="NewItem.ItemTradeStatus" class="text-danger"></span>
         </div>
+        <!-- Submit button for the form -->
         <button type="submit" class="btn btn-primary"><i class="bi bi-check2-circle"></i> Submit</button>
     </form>
 </div>

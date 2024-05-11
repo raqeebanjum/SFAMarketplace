@@ -8,12 +8,15 @@
 }
 
 
-
+<!-- Form for submitting a new review -->
 <form method="post">
+    <!-- Hidden input to hold the Seller ID -->
     <input type="hidden" asp-for="NewReview.SellerID" />
+
+    <!-- Header displaying the name of the seller being reviewed -->
     <h2 class="text-center mb-4">Reviews for @Model.SellerName</h2>
 
-
+    <!-- Dropdown selection for submitting a rating -->
     <div class="form-group">
         <label asp-for="NewReview.Rating" class="control-label">Rating</label>
         <select asp-for="NewReview.Rating" class="form-control">
@@ -24,17 +27,18 @@
             <option value="4">4 Stars</option>
             <option value="5">5 Stars</option>
         </select>
+        <!-- Display validation error for rating -->
         <span asp-validation-for="NewReview.Rating" class="text-danger"></span>
     </div>
 
-
+    <!-- Text area for entering a comment about the seller -->
     <div class="form-group">
         <label asp-for="NewReview.Comment" class="control-label">Comment</label>
         <textarea asp-for="NewReview.Comment" class="form-control"></textarea>
+        <!-- Display validation error for comment -->
         <span asp-validation-for="NewReview.Comment" class="text-danger"></span>
     </div>
 
-   
-
+    <!-- Submit button for the review -->
     <button type="submit" class="btn btn-primary">Submit Review</button>
 </form>

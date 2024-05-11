@@ -1,77 +1,84 @@
 ﻿/* ProfileStyleSheet.css */
 
+/* CSS styling for body and html elements */
 body, html {
     background-color: #282a36;
-    color: black;
+    color: black; /* Text color */
 }
 
+/* CSS styling for profile container */
 .profile-container {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    background: #ffffff;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 800px; /* Maximum width of the container */
+    margin: 40px auto; /* Centering the container horizontally */
+    padding: 40px; /* Padding inside the container */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Box shadow for depth */
+    background: #ffffff; /* Background color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font family */
 }
 
+/* CSS styling for profile header */
 .profile-header {
-    text-align: center;
-    margin-bottom: 50px;
+    text-align: center; /* Center alignment */
+    margin-bottom: 50px; /* Spacing below the header */
 }
 
+/* CSS styling for profile image */
 .profile-image {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    margin: 20px auto;
-    display: block;
-    object-fit: cover;
-    border: 3px solid #007BFF;
+    width: 200px; /* Width of the image */
+    height: 200px; /* Height of the image */
+    border-radius: 50%; /* Circular border */
+    margin: 20px auto; /* Centering the image horizontally */
+    display: block; /* Ensuring it's a block element */
+    object-fit: cover; /* Ensuring the image covers without distorting */
+    border: 3px solid #007BFF; /* Border color and width */
 }
 
+/* CSS styling for profile details */
 .profile-detail {
-    font-size: 1.2em;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    font-size: 1.2em; /* Font size */
+    margin-bottom: 15px; /* Spacing below each detail */
+    display: flex; /* Flex layout */
+    align-items: center; /* Center alignment vertically */
+    justify-content: space-between; /* Spacing between items */
 }
 
     .profile-detail label {
-        font-weight: bold;
-        color: #333;
-        margin-right: 10px;
+        font-weight: bold; /* Bold font weight */
+        color: #333; /* Text color */
+        margin-right: 10px; /* Spacing to the right */
     }
 
+/* CSS styling for profile footer */
 .profile-footer {
-    text-align: center;
-    margin-top: 50px;
+    text-align: center; /* Center alignment */
+    margin-top: 50px; /* Spacing above the footer */
 }
 
+/* CSS styling for primary button */
 .btn-primary {
-    padding: 10px 20px;
-    border: none;
-    background-color: #007BFF;
-    color: white;
-    border-radius: 5px;
-    text-decoration: none;
-    font-size: 1em;
-    transition: background-color 0.3s;
+    padding: 10px 20px; /* Padding for button */
+    border: none; /* No border */
+    background-color: #007BFF; /* Background color */
+    color: white; /* Text color */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* No underline */
+    font-size: 1em; /* Font size */
+    transition: background-color 0.3s; /* Transition effect */
 }
 
     .btn-primary:hover {
-        background-color: #0056b3;
+        background-color: #0056b3; /* Hover background color */
     }
 
+/* Media query for smaller screens */
 @media (max-width: 767px) {
     .profile-container {
-        padding: 20px;
+        padding: 20px; /* Reduced padding for smaller screens */
     }
 
     .profile-detail {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; /* Flex direction column for smaller screens */
+        align-items: flex-start; /* Alignment to the start */
     }
 }
-

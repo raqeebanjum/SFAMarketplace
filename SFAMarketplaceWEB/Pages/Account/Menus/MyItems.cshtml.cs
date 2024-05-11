@@ -1,3 +1,4 @@
+// Import necessary namespaces
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,22 +10,31 @@ using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
     [BindProperties]
     public class MyItemsModel : PageModel
     {
+        // Property to hold user's items
         public List<Item> myItems { get; set; } = new List<Item>();
 
+        // Handler for HTTP GET requests
         public void OnGet()
         {
+            // Load user's items
             LoadUserItems();
         }
 
+        // Method to load user's items
         private void LoadUserItems()
         {
+            // Clear existing items
             myItems.Clear();
-            string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value; // Retrieve the current user's ID
 
+            // Retrieve the current user's ID
+            string currentUserID = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+            // Retrieve user's items from the database
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 string cmdText = "SELECT * FROM Item WHERE UserId = @UserId";
@@ -36,6 +46,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         while (reader.Read())
                         {
+                            // Add each item to the list
                             myItems.Add(new Item
                             {
                                 ItemID = reader.GetInt32(reader.GetOrdinal("ItemID")),

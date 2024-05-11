@@ -9,13 +9,18 @@ using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
     [BindProperties]
     public class ViewItemModel : PageModel
     {
+        // Property to hold the item
         public Item Item { get; set; }
-        public string PostedBy { get; set; } // this is to store the username of whoever posted the item
 
+        // Property to store the username of the item poster
+        public string PostedBy { get; set; }
+
+        // Handler for HTTP GET requests
         public void OnGet(int itemId)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -34,6 +39,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                     {
                         if (reader.Read())
                         {
+                            // Map item properties
                             Item = new Item
                             {
                                 ItemID = reader.GetInt32("ItemID"),
@@ -65,7 +71,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
-
+        // Handler for adding item to cart
         public IActionResult OnPostAddToCart(int itemId)
         {
             string currentUserID = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -112,6 +118,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
+
+        // Handler for adding item to wishlist
         public IActionResult OnPostAddToWishlist(int itemId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -154,8 +162,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
-
-
+        // Method to ensure user has a cart
         private int EnsureUserHasCart(SqlConnection conn, string userId)
         {
             string checkCartCmd = "SELECT CartID FROM Cart WHERE UserID = @UserID";
@@ -177,7 +184,5 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
-
-
     }
 }

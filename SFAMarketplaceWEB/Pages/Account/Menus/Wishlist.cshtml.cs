@@ -8,18 +8,21 @@ using System.Security.Claims;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
-
     public class WishlistModel : PageModel
     {
+        // Property to hold wishlist items
         public List<Item> WishlistItems { get; set; } = new List<Item>();
 
+        // Handler for HTTP GET requests
         public void OnGet()
         {
-            string userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             LoadWishlistItems(userId);
         }
 
+        // Method to load wishlist items
         private void LoadWishlistItems(string userId)
         {
             WishlistItems = new List<Item>();
@@ -43,31 +46,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
-        
 
-        private int EnsureUserHasCart(SqlConnection conn, string userId)
-        {
-            string checkCartCmd = "SELECT CartID FROM Cart WHERE UserID = @UserID";
-            using (var cartCmd = new SqlCommand(checkCartCmd, conn))
-            {
-                cartCmd.Parameters.AddWithValue("@UserID", userId);
-                var cartIdObj = cartCmd.ExecuteScalar();
-                if (cartIdObj != null)
-                {
-                    return (int)cartIdObj;
-                }
-
-                string createCartCmd = "INSERT INTO Cart (UserID) OUTPUT INSERTED.CartID VALUES (@UserID)";
-                using (var createCmd = new SqlCommand(createCartCmd, conn))
-                {
-                    createCmd.Parameters.AddWithValue("@UserID", userId);
-                    return (int)createCmd.ExecuteScalar();
-                }
-            }
-        }
-
-
-
+        // Method to remove item from wishlist
         public IActionResult OnPostRemoveFromWishlist(int itemId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -106,9 +86,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             return RedirectToPage(); // Stays on the same page, updating the view to reflect changes
         }
 
-
-
-
+        // Method to move item to cart
         public IActionResult OnPostMoveToCart(int itemId)
         {
             string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -141,10 +119,27 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 return Page();
             }
         }
-         
-         
-         
 
+        // Method to ensure user has cart
+        private int EnsureUserHasCart(SqlConnection conn, string userId)
+        {
+            string checkCartCmd = "SELECT CartID FROM Cart WHERE UserID = @UserID";
+            using (var cartCmd = new SqlCommand(checkCartCmd, conn))
+            {
+                cartCmd.Parameters.AddWithValue("@UserID", userId);
+                var cartIdObj = cartCmd.ExecuteScalar();
+                if (cartIdObj != null)
+                {
+                    return (int)cartIdObj;
+                }
 
+                string createCartCmd = "INSERT INTO Cart (UserID) OUTPUT INSERTED.CartID VALUES (@UserID)";
+                using (var createCmd = new SqlCommand(createCartCmd, conn))
+                {
+                    createCmd.Parameters.AddWithValue("@UserID", userId);
+                    return (int)createCmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }

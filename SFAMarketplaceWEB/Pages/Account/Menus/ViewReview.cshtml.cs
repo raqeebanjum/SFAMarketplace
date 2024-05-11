@@ -8,39 +8,56 @@ using System.Collections.Generic;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
     [BindProperties]
     public class ViewReviewModel : PageModel
     {
-        // Assuming you have a User model that includes user-related information
+        // Property to hold the username of the seller
         public string PostedBy { get; set; }
-        public int SellerID { get; set; }
-        public string ReviewerName { get; set; } 
 
+        // Property to hold the seller ID
+        public int SellerID { get; set; }
+
+        // Property to hold the name of the reviewer
+        public string ReviewerName { get; set; }
+
+        // Property to hold the average rating
         public double AverageRating { get; set; }
 
+        // Dictionary to hold rating distribution
         public Dictionary<int, double>? RatingDistribution { get; set; }
 
+        // List to hold seller reviews
         public List<Review> SellerReviews { get; set; } = new List<Review>();
 
+        // Handler for HTTP GET requests
         public void OnGet(int sellerId)
         {
+            // Set seller ID
             SellerID = sellerId;
+
+            // Get seller name
             PostedBy = GetSellerName(sellerId);
+
+            // Get reviews for seller
             SellerReviews = GetReviewsForSeller(sellerId);
+
+            // Calculate average rating
             AverageRating = SellerReviews.Any() ? SellerReviews.Average(review => review.Rating) : 0;
 
-            CalculateRatingDistribution(); // This will initialize RatingDistribution even if there are no reviews.
+            // Calculate rating distribution
+            CalculateRatingDistribution();
         }
 
-
-
+        // Method to calculate rating distribution
         private void CalculateRatingDistribution()
         {
             RatingDistribution = new Dictionary<int, double>();
 
             var maxRating = 5; // Assuming 5 is the max rating
-                               // Initialize the distribution dictionary with 0 for all possible ratings
+
+            // Initialize the distribution dictionary with 0 for all possible ratings
             for (int i = 1; i <= maxRating; i++)
             {
                 RatingDistribution[i] = 0;
@@ -58,8 +75,7 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
             }
         }
 
-
-
+        // Method to get seller name
         private string GetSellerName(int sellerId)
         {
             using (var connection = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -79,6 +95,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
         }
+
+        // Method to get reviews for seller
         private List<Review> GetReviewsForSeller(int sellerId)
         {
             var reviews = new List<Review>();

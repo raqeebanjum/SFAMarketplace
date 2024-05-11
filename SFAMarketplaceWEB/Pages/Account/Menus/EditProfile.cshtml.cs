@@ -1,3 +1,4 @@
+// Import necessary namespaces
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,24 +11,29 @@ using System.Text.RegularExpressions;
 
 namespace SFAMarketplaceWEB.Pages.Account.Menus
 {
+    // Require authorization for access
     [Authorize]
     [BindProperties]
     public class EditProfileModel : PageModel
     {
-        public UpdatedPassword updatedPassword {  get; set; }
+        // Property for updated password
+        public UpdatedPassword updatedPassword { get; set; }
 
-       
+        // Handler for HTTP GET requests
         public void OnGet()
         {
         }
 
+        // Handler for HTTP POST requests
         public IActionResult OnPost()
         {
+            // Check if model state is valid
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
+            // Get the user ID from the claim
             int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             // Retrieve the current password hash from the database
@@ -38,10 +44,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 SELECT PasswordHash FROM Users WHERE UserId = @userID";
                 using (SqlCommand cmd = new SqlCommand(cmdText, conn))
                 {
-                    
                     cmd.Parameters.AddWithValue("@userID", userId);
                     conn.Open();
-
                     currentPasswordHash = (string)cmd.ExecuteScalar();
                 }
             }
@@ -91,11 +95,8 @@ namespace SFAMarketplaceWEB.Pages.Account.Menus
                 }
             }
 
+            // Redirect to profile page after successful password update
             return RedirectToPage("/Account/Profile");
         }
     }
 }
-
-
-
-

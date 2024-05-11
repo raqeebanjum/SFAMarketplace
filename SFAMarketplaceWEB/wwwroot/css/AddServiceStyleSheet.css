@@ -1,9 +1,11 @@
-﻿body {
+﻿/* CSS styling for the body element */
+body {
     background-color: #282a36;
     color: #f8f8f2;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* CSS styling for the service form container */
 .service-form-container {
     background-color: #333;
     padding: 20px;
@@ -13,21 +15,25 @@
     margin: 20px auto;
 }
 
+/* CSS styling for the form title */
 .form-title {
     color: #55aaff;
     margin-bottom: 20px;
 }
 
+/* CSS styling for form groups */
 .form-group {
     margin-bottom: 15px;
 }
 
+    /* CSS styling for form group labels */
     .form-group label {
         display: block;
         color: #ccc;
         margin-bottom: 5px;
     }
 
+/* CSS styling for form controls */
 .form-control {
     background-color: #222;
     border: 1px solid #444;
@@ -36,11 +42,13 @@
     border-radius: 4px;
 }
 
+    /* CSS styling for form controls when focused */
     .form-control:focus {
         border-color: #007bff;
         box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
     }
 
+/* CSS styling for primary buttons */
 .btn-primary {
     background-color: #0066ff;
     border: none;
@@ -51,14 +59,17 @@
     transition: background-color 0.3s;
 }
 
+    /* CSS styling for primary buttons on hover */
     .btn-primary:hover {
         background-color: #0056e0;
     }
 
+/* CSS styling for text with danger */
 .text-danger {
     color: #ff5555;
 }
 
+/* CSS styling for alert messages with danger */
 .alert-danger {
     background-color: #440000;
     color: #ffaaaa;

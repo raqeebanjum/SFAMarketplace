@@ -12,12 +12,15 @@ namespace SFAMarketplaceWEB.Pages.Account
     public class ProfileModel : PageModel
     {
         [BindProperty]
-        public UserProfile profile {  get; set; } = new UserProfile();
+        public UserProfile profile { get; set; } = new UserProfile();
+
+        // Handler for HTTP GET requests
         public void OnGet()
         {
-            PopulateProfile();
+            PopulateProfile(); // Populate user profile data
         }
 
+        // Method to populate user profile data
         private void PopulateProfile()
         {
             string email = HttpContext.User.FindFirstValue(ClaimTypes.Email);
@@ -32,13 +35,12 @@ namespace SFAMarketplaceWEB.Pages.Account
                 {
                     reader.Read();
                     profile.FirstName = reader.GetString(0);
-                    profile.LastName = reader.GetString(1); 
+                    profile.LastName = reader.GetString(1);
                     profile.Username = reader.GetString(2);
-                    profile.Email = email;                   
+                    profile.Email = email;
                     profile.LastLoginTime = reader.GetDateTime(3);
                 }
             }
         }
-
     }
 }

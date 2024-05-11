@@ -1,9 +1,11 @@
-﻿html {
+﻿/* CSS styling for html element */
+html {
     position: relative;
     min-height: 100%;
     font-size: 14px;
 }
 
+/* CSS styling for body element */
 body {
     display: flex;
     flex-direction: column;
@@ -11,27 +13,30 @@ body {
     margin: 0; /* Remove default margin */
 }
 
+/* CSS styling for main content area */
 .main-content {
     flex: 1 0 auto; /* The main content area should be flexible and grow to fill space */
 }
 
+/* CSS styling for footer */
 .footer {
     flex-shrink: 0; /* Footer should not shrink */
     text-align: center; /* Centering footer content */
 }
 
+/* Media query for adjusting font size on larger screens */
 @media (min-width: 768px) {
     html {
         font-size: 16px;
     }
 }
 
-
-
+/* CSS styling for navbar */
 .navbar {
     padding: 0.5rem 1rem; /* Consistent padding around the navbar */
 }
 
+    /* CSS styling for navbar focus and active states */
     .navbar .btn:focus,
     .navbar .btn:active:focus,
     .navbar .btn-link.nav-link:focus,
@@ -40,6 +45,7 @@ body {
         box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
     }
 
+    /* CSS styling for navbar links */
     .navbar .nav-link {
         display: flex;
         align-items: center; /* Center alignment vertically */
@@ -49,19 +55,23 @@ body {
         color: black; /* Ensure the text color is visible */
     }
 
+    /* CSS styling for cart icon */
     .navbar .bi-cart2 {
         font-size: 24px; /* Large size for the icon */
         color: black; /* Color for the icon */
     }
 
+    /* CSS styling for navbar collapse */
     .navbar .navbar-collapse {
         align-items: center; /* This ensures that all nav items are centered vertically */
     }
 
+    /* CSS styling for navbar navigation items */
     .navbar .navbar-nav {
         justify-content: flex-end; /* Ensures that nav items are aligned to the right */
     }
 
+    /* CSS styling for navbar brand */
     .navbar .navbar-brand {
         margin-right: auto; /* Pushes all other navbar items to the right */
     }

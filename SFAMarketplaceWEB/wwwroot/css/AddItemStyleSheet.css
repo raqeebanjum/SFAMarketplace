@@ -1,68 +1,78 @@
-﻿body {
-    background-color: #282a36; 
-    color: #f8f8f2; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+﻿/* Body styles */
+body {
+    background-color: #282a36; /* Background color */
+    color: #f8f8f2; /* Text color */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Font family */
 }
 
-
+/* Container for form */
 .item-form-container {
-    background-color: #333;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-    width: 60%;
-    margin: 20px auto;
+    background-color: #333; /* Background color */
+    padding: 20px; /* Padding */
+    border-radius: 8px; /* Border radius */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5); /* Box shadow */
+    width: 60%; /* Width */
+    margin: 20px auto; /* Margin */
 }
 
+/* Form title */
 .form-title {
-    color: #55aaff;
-    margin-bottom: 20px;
+    color: #55aaff; /* Text color */
+    margin-bottom: 20px; /* Margin bottom */
 }
 
+/* Form group */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 15px; /* Margin bottom */
 }
 
+    /* Label within form group */
     .form-group label {
-        display: block;
-        color: #ccc;
-        margin-bottom: 5px;
+        display: block; /* Display as block */
+        color: #ccc; /* Text color */
+        margin-bottom: 5px; /* Margin bottom */
     }
 
+/* Form control input */
 .form-control {
-    background-color: #222;
-    border: 1px solid #444;
-    color: #ddd;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #222; /* Background color */
+    border: 1px solid #444; /* Border */
+    color: #ddd; /* Text color */
+    padding: 10px; /* Padding */
+    border-radius: 4px; /* Border radius */
 }
 
+    /* Form control input focus state */
     .form-control:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 2px rgba(0,123,255,0.25);
+        border-color: #007bff; /* Border color */
+        box-shadow: 0 0 0 2px rgba(0,123,255,0.25); /* Box shadow */
     }
 
+/* Primary button */
 .btn-primary {
-    background-color: #0066ff;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    color: #ffffff;
-    cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: #0066ff; /* Background color */
+    border: none; /* Border */
+    padding: 10px 15px; /* Padding */
+    border-radius: 4px; /* Border radius */
+    color: #ffffff; /* Text color */
+    cursor: pointer; /* Cursor */
+    transition: background-color 0.3s; /* Transition */
 }
 
+    /* Primary button hover state */
     .btn-primary:hover {
-        background-color: #0056e0;
+        background-color: #0056e0; /* Background color */
     }
 
+/* Text danger color */
 .text-danger {
-    color: #ff5555;
+    color: #ff5555; /* Text color */
 }
 
+/* Alert danger */
 .alert-danger {
-    background-color: #440000;
-    color: #ffaaaa;
-    padding: 10px;
-    border-radius: 4px;
+    background-color: #440000; /* Background color */
+    color: #ffaaaa; /* Text color */
+    padding: 10px; /* Padding */
+    border-radius: 4px; /* Border radius */
 }

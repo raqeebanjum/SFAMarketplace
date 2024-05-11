@@ -1,4 +1,5 @@
-﻿body, html {
+﻿/* CSS styling for the body and html elements */
+body, html {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -6,25 +7,30 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-﻿
+/* CSS styling for text center alignment */
 .text-center {
     text-align: center;
     margin-bottom: 50px;
-    
 }
+
+/* CSS styling for bold font */
 .font-bold {
     color: white;
 }
+
+/* CSS styling for vertical padding */
 .py-6 {
     color: white;
 }
 
+/* CSS styling for card image top */
 .card-img-top {
     width: 100%; /* Makes the image fill the container width */
     height: 200px; /* Set a fixed height for the images */
     object-fit: cover; /* Ensures the image covers the area without distorting */
 }
 
+/* CSS styling for image placeholder */
 .image-placeholder {
     display: flex;
     align-items: center;
@@ -38,21 +44,23 @@
     /* object-fit removed from here since it's not applicable to div elements */
 }
 
-
-
+/* CSS styling for cards */
 .card {
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     transition: 0.1s;
 }
 
+    /* CSS styling for card hover effect */
     .card:hover {
         box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
 
+/* CSS styling for card body */
 .card-body {
     padding: 15px;
 }
 
+/* CSS styling for responsiveness */
 @media (max-width: 767px) {
     .col-md-4 {
         flex: 0 0 100%;
