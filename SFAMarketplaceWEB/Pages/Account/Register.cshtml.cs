@@ -4,7 +4,6 @@ using Microsoft.Data.SqlClient;
 using SFAMarketplaceWEB.Helpers;
 using SFAMarketplaceWEB.Models;
 using System;
-using System.Text.RegularExpressions;
 
 namespace SFAMarketplaceWEB.Pages.Account
 {
@@ -13,20 +12,21 @@ namespace SFAMarketplaceWEB.Pages.Account
         [BindProperty]
         public User NewUser { get; set; }
 
+        // Handler for HTTP POST requests
         public ActionResult OnPost()
         {
-
-
-
+            // Validate user input
             if (ModelState.IsValid)
             {
+                // Check if username and email do not exist in the database
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
-                    RegisterUser();
-                    return RedirectToPage("Login");
+                    RegisterUser(); // Register the new user
+                    return RedirectToPage("Login"); // Redirect to the login page after successful registration
                 }
                 else
                 {
+                    // Display error messages if username or email already exist
                     if (!UsernameDoesNotExist(NewUser.Username))
                     {
                         ModelState.AddModelError("RegisterError", "This username is already taken.");
@@ -35,25 +35,29 @@ namespace SFAMarketplaceWEB.Pages.Account
                     {
                         ModelState.AddModelError("RegisterError", "This email is already taken.");
                     }
-                    return Page();
+                    return Page(); // Stay on the registration page
                 }
             }
             else
             {
-                return Page();
+                return Page(); // Stay on the registration page if model state is invalid
             }
         }
 
+        // Method to register a new user
         private void RegisterUser()
         {
+            // Establish connection to the database
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
                 conn.Open();
 
+                // SQL command to insert user data into the database
                 string cmdText = @"
                     INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
                     VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
+                // Execute the SQL command
                 using (var cmd = new SqlCommand(cmdText, conn))
                 {
                     cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
@@ -68,6 +72,7 @@ namespace SFAMarketplaceWEB.Pages.Account
             }
         }
 
+        // Method to check if a username already exists in the database
         private bool UsernameDoesNotExist(string username)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -79,12 +84,13 @@ namespace SFAMarketplaceWEB.Pages.Account
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        return !reader.HasRows;
+                        return !reader.HasRows; // Return true if username does not exist, false otherwise
                     }
                 }
             }
         }
 
+        // Method to check if an email already exists in the database
         private bool EmailDoesNotExist(string email)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -96,11 +102,10 @@ namespace SFAMarketplaceWEB.Pages.Account
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        return !reader.HasRows;
+                        return !reader.HasRows; // Return true if email does not exist, false otherwise
                     }
                 }
             }
         }
     }
 }
-
