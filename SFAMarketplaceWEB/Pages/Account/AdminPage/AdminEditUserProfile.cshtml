@@ -10,7 +10,7 @@
 
 <div class="item-form-container">
     <h2>Edit User Profile</h2>
-    <div asp-validation-summary="All" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <form method="post" enctype="multipart/form-data">
         <input type="hidden" asp-for="User.UserId" />
 
