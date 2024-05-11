@@ -1,52 +1,52 @@
+/* CSS styling for HTML */
 html {
-    font-size: 14px;
-    height: 100%; /* Make sure html element fills the height of the viewport */
+    font-size: 14px; /* Base font size */
 }
 
+/* Media query for larger screens */
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px; /* Font size for larger screens */
+    }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+/* CSS styling for buttons and form elements on focus */
+.btn:focus,
+.btn:active:focus,
+.btn-link.nav-link:focus,
+.form-control:focus,
+.form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb; /* Box shadow on focus */
 }
 
+/* CSS styling for HTML */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative; /* Relative positioning */
+    min-height: 100%; /* Minimum height */
 }
 
-
+/* CSS styling for body */
 body {
-    display: flex;
-    flex-direction: column; /* Stack content vertically */
-    min-height: 100%; /* Minimum height is full viewport */
-    margin: 0; /* Remove default margin */
+    margin-bottom: 60px; /* Bottom margin */
 }
 
+/* CSS styling for navigation links */
 .nav-link {
-    display: flex;
+    display: flex; /* Flex layout */
     align-items: center; /* Center alignment vertically */
     justify-content: center; /* Center alignment horizontally */
-    padding: 8px 12px; /* Adjust padding as needed */
+    padding: 8px 12px; /* Padding */
     height: 100%; /* Fill the height */
-    color: black; /* Ensure the text color is visible */
+    color: black; /* Text color */
 }
 
+/* CSS styling for cart icon */
 .bi-cart2 {
-    font-size: 24px; /* Large size for the icon */
-    color: black; /* Color for the icon */
+    font-size: 24px; /* Large font size */
+    color: black; /* Icon color */
 }
 
+/* CSS styling for navbar collapse */
 .navbar-collapse {
-    align-items: center; /* This ensures that all nav items are centered */
-}
-.main-content {
-    flex: 1; /* Allows main content to expand and fill available space, pushing the footer down */
-}
-
-.footer {
-    flex-shrink: 0; /* Prevent footer from shrinking */
+    align-items: center; /* Center alignment */
 }
