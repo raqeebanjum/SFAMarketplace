@@ -7,27 +7,27 @@ using SFAMarketplaceWEB.Models;
 
 namespace SFAMarketplaceWEB.Pages.Account.AdminPage
 {
-    [Authorize (Policy = "Admin")]
-    public class AddAccountModel : PageModel
+    [Authorize(Policy = "Admin")] // Authorizes only users with "Admin" policy
+    public class AddAccountModel : PageModel // Represents the Add Account page model
     {
         [BindProperty]
-        public User NewUser { get; set; }
+        public User NewUser { get; set; } // Property for binding user data from the form
 
+        // Handles HTTP POST requests
         public ActionResult OnPost()
         {
-
-
-
+            // Checks if model state is valid
             if (ModelState.IsValid)
             {
-
+                // Checks if username and email do not already exist
                 if (UsernameDoesNotExist(NewUser.Username) && EmailDoesNotExist(NewUser.Email))
                 {
-                    AddUser();
-                    return RedirectToPage("ManageUsers");
+                    AddUser(); // Adds the new user to the database
+                    return RedirectToPage("ManageUsers"); // Redirects to ManageUsers page
                 }
                 else
                 {
+                    // Adds error message if username or email already exists
                     if (!UsernameDoesNotExist(NewUser.Username))
                     {
                         ModelState.AddModelError("RegisterError", "This username is already taken.");
@@ -36,27 +36,27 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                     {
                         ModelState.AddModelError("RegisterError", "This email is already taken.");
                     }
-                    return Page();
+                    return Page(); // Returns the current page with validation errors
                 }
             }
             else
             {
-                return Page();
+                return Page(); // Returns the current page with validation errors
             }
         }
 
-
-
+        // Method to add a new user to the database
         private void AddUser()
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
             {
-                conn.Open();
+                conn.Open(); // Opens database connection
 
                 string cmdText = @"
                     INSERT INTO Users (FirstName, LastName, Username, Email, PasswordHash, Role, LastLoginTime) 
                     VALUES (@FirstName, @LastName, @Username, @Email, @PasswordHash, @Role, @LastLoginTime)";
 
+                // Executes SQL command to insert new user data into Users table
                 using (var cmd = new SqlCommand(cmdText, conn))
                 {
                     cmd.Parameters.AddWithValue("@FirstName", NewUser.FirstName);
@@ -67,11 +67,12 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                     int roleId = NewUser.Email.EndsWith("@admin.com") ? 1 : 2;
                     cmd.Parameters.AddWithValue("@Role", roleId);
                     cmd.Parameters.AddWithValue("@LastLoginTime", DateTime.Now);
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery(); // Executes the SQL command
                 }
             }
         }
 
+        // Method to check if username does not exist in the database
         private bool UsernameDoesNotExist(string username)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -83,12 +84,13 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        return !reader.HasRows;
+                        return !reader.HasRows; // Returns true if username does not exist
                     }
                 }
             }
         }
 
+        // Method to check if email does not exist in the database
         private bool EmailDoesNotExist(string email)
         {
             using (var conn = new SqlConnection(SecurityHelper.GetDBConnectionString()))
@@ -100,11 +102,10 @@ namespace SFAMarketplaceWEB.Pages.Account.AdminPage
                     conn.Open();
                     using (var reader = cmd.ExecuteReader())
                     {
-                        return !reader.HasRows;
+                        return !reader.HasRows; // Returns true if email does not exist
                     }
                 }
             }
         }
-
     }
 }
